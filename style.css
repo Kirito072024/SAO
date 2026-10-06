@@ -21,6 +21,21 @@
   --border-color: #3a2e60;    /* рамки */
   --on-primary: #1a1030;      /* текст на рожевій кнопці */
 
+  /* шапка (небо) */
+  --sky-1: #1a0f3a;
+  --sky-2: #4a2273;
+  --sky-3: #a8407a;
+  --sky-4: #e8845f;
+  --sun-glow: rgba(255, 184, 107, 0.65);
+  --star-color: #ffffff;
+  --hero-title-color: #ffffff;
+  --hero-text-color: #f6e9f5;
+  --hero-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  --nav-bg: rgba(18, 13, 34, 0.5);
+  --nav-text: #ffffff;
+  --nav-border: rgba(255, 255, 255, 0.28);
+  --img-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+
   --font-heading: "Exo 2", "Segoe UI", Arial, sans-serif;
   --font-body: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
 
@@ -35,6 +50,40 @@
   --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 
   color-scheme: dark; /* темні скролбари та елементи форм */
+}
+
+/* ===== 1a. Світла (денна) тема: перевизначаємо тільки змінні ===== */
+:root[data-theme="light"] {
+  --primary-color: #d6336c;
+  --primary-dark: #b82459;
+  --accent-color: #a85d00;
+  --danger-color: #d12a4a;
+  --text-color: #241b3f;
+  --muted-color: #5d5478;
+  --bg-color: #eef1fb;
+  --bg-deep-color: #dfe5f6;
+  --surface-color: #ffffff;
+  --card-color: #f4f1ff;
+  --field-color: #f7f5fd;
+  --border-color: #d8d0ee;
+  --on-primary: #ffffff;
+
+  --sky-1: #4f8fe0;
+  --sky-2: #8fc0f0;
+  --sky-3: #ffc4a0;
+  --sky-4: #ffe0b0;
+  --sun-glow: rgba(255, 236, 170, 0.9);
+  --star-color: transparent;
+  --hero-title-color: #14213d;
+  --hero-text-color: #1d2f55;
+  --hero-shadow: 0 2px 18px rgba(255, 255, 255, 0.55);
+  --nav-bg: rgba(255, 255, 255, 0.6);
+  --nav-text: #14213d;
+  --nav-border: rgba(20, 33, 61, 0.25);
+  --shadow: 0 12px 32px rgba(60, 40, 110, 0.12);
+  --img-shadow: 0 8px 24px rgba(60, 40, 110, 0.2);
+
+  color-scheme: light;
 }
 
 /* ===== 2. Базові стилі (body) ===== */
@@ -58,6 +107,7 @@ body {
   background-image: linear-gradient(180deg, var(--bg-color) 0%, var(--bg-deep-color) 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
@@ -77,8 +127,8 @@ h1 {
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: var(--space-sm);
-  color: #fff;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  color: var(--hero-title-color);
+  text-shadow: var(--hero-shadow);
 }
 
 h2 {
@@ -143,28 +193,28 @@ header {
   text-align: center;
   overflow: hidden;
   border-bottom: 1px solid var(--border-color);
-  background-color: #1a0f3a;
+  background-color: var(--sky-1);
   background-image:
-    /* зорі */
-    radial-gradient(1.5px 1.5px at 8% 18%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 22% 42%, #fff 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 35% 12%, #ffd9ec 50%, transparent 51%),
-    radial-gradient(1px 1px at 48% 30%, #fff 50%, transparent 51%),
-    radial-gradient(2px 2px at 63% 16%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 74% 38%, #ffe3c4 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 86% 10%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 93% 34%, #fff 50%, transparent 51%),
-    /* сяйво заходу сонця знизу */
-    radial-gradient(ellipse 70% 60% at 50% 115%, rgba(255, 184, 107, 0.65), transparent 70%),
+    /* зорі (вдень непомітні) */
+    radial-gradient(1.5px 1.5px at 8% 18%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 42%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 35% 12%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 48% 30%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(2px 2px at 63% 16%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 74% 38%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 86% 10%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 93% 34%, var(--star-color) 50%, transparent 51%),
+    /* сяйво сонця знизу */
+    radial-gradient(ellipse 70% 60% at 50% 115%, var(--sun-glow), transparent 70%),
     /* небо */
-    linear-gradient(180deg, #1a0f3a 0%, #4a2273 48%, #a8407a 80%, #e8845f 100%);
+    linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 48%, var(--sky-3) 80%, var(--sky-4) 100%);
 }
 
 header p {
   margin-inline: auto;
   margin-bottom: 0;
   font-size: 1.2rem;
-  color: #f6e9f5;
+  color: var(--hero-text-color);
 }
 
 /* ===== 6. Навігація ===== */
@@ -181,10 +231,10 @@ nav ul {
 nav a {
   display: inline-block;
   padding: 0.45rem 1.1rem;
-  color: #fff;
+  color: var(--nav-text);
   font-weight: 500;
-  background-color: rgba(18, 13, 34, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background-color: var(--nav-bg);
+  border: 1px solid var(--nav-border);
   border-radius: 999px;
   transition: background-color var(--transition), color var(--transition),
     border-color var(--transition), transform var(--transition);
@@ -212,6 +262,7 @@ aside {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   scroll-margin-top: var(--space-md);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* ===== 8. Зображення ===== */
@@ -221,7 +272,7 @@ img {
   height: auto;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--img-shadow);
 }
 
 /* ===== 9. Блок «Айнкрад»: картинка + текст ===== */
@@ -249,14 +300,33 @@ img {
 /* ===== 10. Вступ та історія ===== */
 #home p {
   font-size: 1.15rem;
-  margin-bottom: 0;
 }
 
-#story p {
+#story h2 + p {
   font-size: 1.1rem;
-  margin-bottom: 0;
   padding-left: var(--space-md);
   border-left: 3px solid var(--accent-color);
+}
+
+#story h3 {
+  margin-top: var(--space-lg);
+}
+
+#story ul {
+  margin: 0 0 var(--space-md);
+  padding-left: 1.4rem;
+}
+
+#story li {
+  margin-bottom: var(--space-sm);
+}
+
+#story li::marker {
+  color: var(--primary-color);
+}
+
+#story > p:last-child {
+  margin-bottom: 0;
 }
 
 /* ===== 11. Механіка гри: плитки ===== */
@@ -444,6 +514,52 @@ button:hover {
 
 button:active {
   transform: translateY(0);
+}
+
+/* ===== 14a. Кнопка зміни теми (день / ніч) ===== */
+button.theme-toggle {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  padding: 0.45rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--nav-text);
+  background-color: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  border-radius: 999px;
+}
+
+button.theme-toggle:hover {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+/* ===== 14b. Посилання «Дивитися» ===== */
+a.watch-link {
+  display: inline-block;
+  padding: 0.65rem 1.4rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition);
+}
+
+a.watch-link:hover {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+#home p:last-child {
+  margin-bottom: 0;
 }
 
 /* ===== 15. Цікавий факт ===== */

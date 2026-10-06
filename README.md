@@ -23,9 +23,5 @@ SAO/
     ├── kirito.jpg
     └── asuna.jpg
 ```
-
-## Як запустити
-Відкрийте `index.html` у браузері або запустіть через розширення Live Server у VS Code.
-
 ## Автор
 [Kirito072024](https://github.com/Kirito072024/SAO)

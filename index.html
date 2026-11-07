@@ -157,7 +157,8 @@
       <h2>Контакти</h2>
 
       <!-- action="#" — заглушка; method="get" показує введені дані в адресному рядку -->
-      <form action="#" method="get">
+      <!-- novalidate: вимикаємо стандартну перевірку браузера, валідацію робить script.js -->
+      <form action="#" method="get" novalidate>
 
         <p>
           <label for="name">Ім'я:</label>
@@ -167,6 +168,8 @@
         <p>
           <label for="email">Електронна пошта:</label>
           <input type="email" id="email" name="email" placeholder="name@example.com" required>
+          <!-- inline-підказка під полем (заповнюється в script.js під час вводу) -->
+          <small id="email-hint" class="field-hint"></small>
         </p>
 
         <!-- Додаткове завдання: вибір теми звернення -->
@@ -191,6 +194,9 @@
         </p>
 
         <button type="submit">Надіслати</button>
+
+        <!-- сюди script.js виводить повідомлення про помилку або успіх -->
+        <div id="form-message" role="status"></div>
       </form>
     </section>
 

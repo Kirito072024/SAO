@@ -52,7 +52,9 @@ menuLinks.forEach(function (link) {
   });
 });
 
-/* ===== Перемикач теми день / ніч ===== */
+/* ===== Практичне 15, кроки 1-2: обробник кліку і перемикач теми ===== */
+// (замість класу .dark-theme використано атрибут data-theme на <html>:
+//  ідея та сама — JS змінює стан, а вигляд описано в CSS)
 const root = document.documentElement;
 const themeButton = document.querySelector('#theme-toggle');
 
@@ -70,4 +72,115 @@ setTheme(root.getAttribute('data-theme') || 'dark');
 
 themeButton.addEventListener('click', function () {
   setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+
+
+/* =========================================================
+   Практичне заняття 15: обробка подій та валідація форми
+   ========================================================= */
+
+/* ----- Елементи форми ----- */
+const form = document.querySelector('form');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+const messageInput = document.querySelector('#message');
+const agreeInput = document.querySelector('#agree');
+const formMessage = document.querySelector('#form-message');
+const emailHint = document.querySelector('#email-hint');
+
+/* ----- Показати повідомлення в <div id="form-message"> (крок 6) ----- */
+function showMessage(text, type) {
+  formMessage.textContent = text;
+  formMessage.classList.remove('error', 'success');
+  formMessage.classList.add(type);
+}
+
+/* ----- Перевірка email (крок 5): повертає текст помилки або '' ----- */
+function getEmailError(email) {
+  if (email === '') {
+    return 'Введіть електронну пошту.';
+  }
+  if (!email.includes('@')) {
+    return 'Email має містити символ «@».';
+  }
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    return 'Перевірте формат email, наприклад name@example.com.';
+  }
+  return '';
+}
+
+/* ----- Крок 3: обробник submit з preventDefault ----- */
+form.addEventListener('submit', function (event) {
+  event.preventDefault(); // сторінка не перезавантажується
+
+  // Крок 4: значення полів
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const message = messageInput.value.trim();
+
+  // Крок 5: проста JS-валідація
+  const errors = [];
+
+  if (name === '') {
+    errors.push("Введіть ім'я.");
+  }
+
+  const emailError = getEmailError(email);
+  if (emailError !== '') {
+    errors.push(emailError);
+  }
+
+  if (message === '') {
+    errors.push('Напишіть повідомлення.');
+  }
+
+  if (!agreeInput.checked) {
+    errors.push('Потрібна згода на обробку даних.');
+  }
+
+  // Крок 6: показуємо результат на сторінці і в консолі
+  if (errors.length > 0) {
+    showMessage(errors.join('\n'), 'error');
+    console.warn('Форму не відправлено:', errors);
+    return;
+  }
+
+  showMessage('Дякуємо, ' + name + '! Ваше повідомлення надіслано.', 'success');
+  console.log('Дані форми:', {
+    name: name,
+    email: email,
+    topic: document.querySelector('#topic').value,
+    message: message
+  });
+
+  form.reset();
+  emailInput.classList.remove('valid', 'invalid');
+  emailHint.textContent = '';
+  emailHint.classList.remove('error', 'success');
+});
+
+/* ----- Крок 7 (додатково): inline-перевірка email під час вводу ----- */
+emailInput.addEventListener('input', function () {
+  const value = emailInput.value.trim();
+
+  emailHint.classList.remove('error', 'success');
+  emailInput.classList.remove('valid', 'invalid');
+
+  if (value === '') {
+    emailHint.textContent = '';
+    return;
+  }
+
+  const error = getEmailError(value);
+
+  if (error !== '') {
+    emailHint.textContent = error;
+    emailHint.classList.add('error');
+    emailInput.classList.add('invalid');
+  } else {
+    emailHint.textContent = 'Email виглядає правильно.';
+    emailHint.classList.add('success');
+    emailInput.classList.add('valid');
+  }
 });

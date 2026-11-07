@@ -88,6 +88,11 @@ const agreeInput = document.querySelector('#agree');
 const formMessage = document.querySelector('#form-message');
 const emailHint = document.querySelector('#email-hint');
 
+/* ----- Практичне 18: адреса тестового API і кнопка відправки ----- */
+const API_URL = 'https://jsonplaceholder.typicode.com';
+const submitButton = form.querySelector('button[type="submit"]');
+const submitButtonText = submitButton.textContent;
+
 /* ----- Показати повідомлення в <div id="form-message"> (крок 6) ----- */
 function showMessage(text, type) {
   formMessage.textContent = text;
@@ -111,7 +116,7 @@ function getEmailError(email) {
 }
 
 /* ----- Крок 3: обробник submit з preventDefault ----- */
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', async function (event) {
   event.preventDefault(); // сторінка не перезавантажується
 
   // Крок 4: значення полів
@@ -146,18 +151,55 @@ form.addEventListener('submit', function (event) {
     return;
   }
 
-  showMessage('Дякуємо, ' + name + '! Ваше повідомлення надіслано.', 'success');
-  console.log('Дані форми:', {
+  // Практичне 18, крок 5: збираємо дані форми в об'єкт
+  const data = {
     name: name,
     email: email,
     topic: document.querySelector('#topic').value,
     message: message
-  });
+  };
 
-  form.reset();
-  emailInput.classList.remove('valid', 'invalid');
-  emailHint.textContent = '';
-  emailHint.classList.remove('error', 'success');
+  // Крок 8: стан завантаження — кнопка вимкнена, текст змінено
+  submitButton.disabled = true;
+  submitButton.textContent = 'Надсилання…';
+  formMessage.textContent = '';
+  formMessage.classList.remove('error', 'success');
+
+  try {
+    // Крок 6: POST-запит із JSON
+    const response = await fetch(API_URL + '/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    // Крок 7: перевіряємо response.ok
+    if (!response.ok) {
+      throw new Error('Сервер відповів зі статусом ' + response.status);
+    }
+
+    const result = await response.json();
+    console.log('Відповідь сервера:', result);
+
+    showMessage('Дякуємо, ' + name + '! Повідомлення надіслано (id на сервері: ' + result.id + ').', 'success');
+
+    form.reset();
+    emailInput.classList.remove('valid', 'invalid');
+    emailHint.textContent = '';
+    emailHint.classList.remove('error', 'success');
+  } catch (error) {
+    // сюди потрапляємо і при помилці сервера, і коли немає мережі (Offline)
+    console.error('Помилка відправки форми:', error);
+    // TypeError — це збій мережі (немає інтернету), інакше — помилка від сервера
+    const reason = error instanceof TypeError
+      ? 'Немає з\'єднання з інтернетом.'
+      : 'Сервер повернув помилку.';
+    showMessage('Не вдалося надіслати повідомлення. ' + reason + ' Спробуйте ще раз.\n(' + error.message + ')', 'error');
+  } finally {
+    // кнопка знову доступна в будь-якому випадку
+    submitButton.disabled = false;
+    submitButton.textContent = submitButtonText;
+  }
 });
 
 /* ----- Крок 7 (додатково): inline-перевірка email під час вводу ----- */
@@ -184,3 +226,52 @@ emailInput.addEventListener('input', function () {
     emailInput.classList.add('valid');
   }
 });
+
+
+/* =========================================================
+   Практичне заняття 18: Fetch / AJAX
+   ========================================================= */
+
+/* Крок 1 (у консолі браузера, для перевірки GET-запиту):
+   fetch("https://jsonplaceholder.typicode.com/posts/1").then(r => r.json()).then(console.log)
+
+   Крок 4: ту саму логіку нижче написано через async/await з try/catch. */
+
+/* ----- Кроки 3-4: завантажуємо 3 пости і показуємо їх у розділі «Новини» ----- */
+const newsList = document.querySelector('#news-list');
+
+async function loadNews() {
+  newsList.textContent = 'Завантаження…';
+
+  try {
+    const response = await fetch(API_URL + '/posts?_limit=3');
+
+    if (!response.ok) {
+      throw new Error('Сервер відповів зі статусом ' + response.status);
+    }
+
+    const posts = await response.json();
+    console.log('Отримано пости:', posts);
+
+    newsList.textContent = '';
+
+    posts.forEach(function (post) {
+      const item = document.createElement('div');
+      item.classList.add('news-item');
+
+      const title = document.createElement('h3');
+      title.textContent = post.title;          // textContent — безпечно для даних з API
+
+      const text = document.createElement('p');
+      text.textContent = post.body;
+
+      item.append(title, text);
+      newsList.append(item);
+    });
+  } catch (error) {
+    console.error('Не вдалося завантажити новини:', error);
+    newsList.textContent = 'Не вдалося завантажити новини. Перевірте інтернет і оновіть сторінку.';
+  }
+}
+
+loadNews();

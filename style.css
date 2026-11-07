@@ -570,6 +570,45 @@ a.watch-link:hover {
   margin-bottom: 0;
 }
 
+/* ===== 14d. Блок «Новини» з API та стан кнопки (Практичне 18) ===== */
+#news code {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.95em;
+  background-color: var(--field-color);
+  border-radius: 6px;
+}
+
+#news-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  color: var(--muted-color);
+}
+
+.news-item {
+  padding: var(--space-md);
+  color: var(--text-color);
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-color);
+  border-radius: var(--radius-sm);
+}
+
+.news-item h3 {
+  margin: 0 0 var(--space-sm);
+  text-transform: capitalize;
+}
+
+.news-item p {
+  margin: 0;
+}
+
+/* кнопка під час запиту (disabled) */
+button:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 /* ===== 15. Цікавий факт ===== */
 aside {
   border-left: 5px solid var(--accent-color);

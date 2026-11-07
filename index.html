@@ -30,6 +30,9 @@
 
     <!-- NAV: головне меню, посилання-якорі ведуть до секцій за id -->
     <nav aria-label="Головне меню">
+      <!-- Лого: лівий блок flex-навігації -->
+      <a class="logo" href="#home">SAO</a>
+
       <ul>
         <li><a href="#home">Головна</a></li>
         <li><a href="#aincrad">Айнкрад</a></li>
@@ -202,28 +205,12 @@
   <!-- FOOTER: підвал сайту з авторством і контактами -->
   <footer>
     <p>Фан-проєкт для навчання. Sword Art Online створив Рекі Кавахара, аніме зробила студія A-1 Pictures.</p>
+    <p>&copy; <span id="current-year">2026</span> SAO — Айнкрад</p>
     <p>Автор: <a href="https://github.com/Kirito072024/SAO">Kirito072024 на GitHub</a></p>
   </footer>
 
-  <!-- Скрипт перемикача теми: ставить data-theme="dark" або "light" на <html> і запам'ятовує вибір -->
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.getElementById('theme-toggle');
-
-      function setTheme(theme) {
-        root.setAttribute('data-theme', theme);
-        btn.textContent = theme === 'dark' ? '☀️ День' : '🌙 Ніч';
-        try { localStorage.setItem('theme', theme); } catch (e) {}
-      }
-
-      setTheme(root.getAttribute('data-theme') || 'dark');
-
-      btn.addEventListener('click', function () {
-        setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-      });
-    })();
-  </script>
+  <!-- Практичне 14: підключення script.js (defer — виконується після побудови DOM) -->
+  <script src="script.js" defer></script>
 
 </body>
 </html>

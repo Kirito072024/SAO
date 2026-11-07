@@ -217,34 +217,61 @@ header p {
   color: var(--hero-text-color);
 }
 
-/* ===== 6. Навігація ===== */
+/* ===== 6. Навігація (Flexbox) ===== */
+/* nav — flex-контейнер: лого зліва, посилання справа */
+nav {
+  display: flex;                       /* крок 2 */
+  justify-content: space-between;      /* крок 3: простір між лого і посиланнями */
+  align-items: center;                 /* крок 3: вирівнювання по вертикалі */
+  flex-wrap: wrap;
+  gap: var(--space-md);                /* крок 2: відступ між блоками */
+  max-width: 920px;
+  margin: var(--space-lg) auto 0;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  border-radius: var(--radius);
+}
+
+nav .logo {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--hero-title-color);
+}
+
+/* ul — теж flex-контейнер: пункти меню в ряд */
 nav ul {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
   gap: var(--space-sm);
-  margin: var(--space-lg) 0 0;
+  margin: 0;
   padding: 0;
 }
 
-nav a {
+nav li a {
   display: inline-block;
-  padding: 0.45rem 1.1rem;
+  padding: 0.4rem 0.95rem;
   color: var(--nav-text);
   font-weight: 500;
-  background-color: var(--nav-bg);
-  border: 1px solid var(--nav-border);
+  border: 1px solid transparent;
   border-radius: 999px;
   transition: background-color var(--transition), color var(--transition),
-    border-color var(--transition), transform var(--transition);
+    transform var(--transition);
 }
 
-nav a:hover {
+nav li a:hover {
   color: var(--on-primary);
   background-color: var(--primary-color);
-  border-color: var(--primary-color);
   transform: translateY(-2px);
+}
+
+/* клас .active додається скриптом script.js до пункту меню, який вибрали */
+nav li a.active {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
 }
 
 /* ===== 7. Секції як картки (box-model: padding + margin) ===== */
@@ -332,14 +359,15 @@ img {
 /* ===== 11. Механіка гри: плитки ===== */
 #mechanics ul {
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-md);
   margin: 0;
   padding: 0;
 }
 
 #mechanics li {
+  flex: 1 1 340px;                     /* рівна ширина: по 2 у ряд */
   padding: var(--space-md);
   background-color: var(--card-color);
   border: 1px solid var(--border-color);
@@ -359,25 +387,27 @@ img {
 }
 
 /* ===== 12. Картки персонажів і кланів ===== */
+/* контейнер карток — flex (кроки 4-5) */
 #characters,
 #clans {
-  display: grid;
-  gap: var(--space-md);
+  display: flex;
+  flex-wrap: wrap;                     /* картки переносяться на новий рядок */
+  gap: var(--space-md);                /* відступи між картками */
 }
 
-#characters,
-#clans {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-/* заголовок секції займає весь рядок сітки */
+/* заголовок секції займає весь рядок */
 #characters > h2,
 #clans > h2 {
-  grid-column: 1 / -1;
+  flex: 0 0 100%;
   margin-bottom: 0;
 }
 
 article {
+  flex: 1 1 340px;                     /* крок 7: картки однакової ширини */
+  min-width: 0;
+  display: flex;                       /* крок 6: вміст картки теж flex */
+  flex-direction: column;
+  gap: var(--space-sm);
   padding: var(--space-md);
   background-color: var(--card-color);
   border: 1px solid var(--border-color);
@@ -400,8 +430,9 @@ article:hover {
   box-shadow: 0 14px 30px rgba(255, 126, 179, 0.18);
 }
 
+article h3,
 article p {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 /* однакові пропорції портретів, щоб картки були рівними */
@@ -411,7 +442,7 @@ article img {
   aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: center 20%;
-  margin-bottom: var(--space-md);
+  margin: 0;
 }
 
 /* ===== 13. Форма ===== */
@@ -592,12 +623,6 @@ footer p:last-child {
 
 /* ===== 17. Адаптивність та доступність ===== */
 @media (max-width: 600px) {
-  #mechanics ul,
-  #characters,
-  #clans {
-    grid-template-columns: 1fr;
-  }
-
   section,
   aside {
     padding: var(--space-md);
@@ -607,9 +632,20 @@ footer p:last-child {
     font-size: 1.5rem;
   }
 
-  nav a {
-    padding: 0.4rem 0.9rem;
+  nav li a {
+    padding: 0.35rem 0.8rem;
     font-size: 0.95rem;
+  }
+}
+
+/* Додаткове завдання: на вузьких екранах навігація стає колонкою */
+@media (max-width: 700px) {
+  nav {
+    flex-direction: column;
+  }
+
+  nav ul {
+    justify-content: center;
   }
 }
 

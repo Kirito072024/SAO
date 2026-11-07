@@ -1,0 +1,38 @@
+/* =========================================================
+   Практичне заняття 17: вхідний файл Tailwind CSS (v4)
+   Збірка:  npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
+   ========================================================= */
+
+@import "tailwindcss";
+
+/* ===== Крок 7. Кольори проєкту в конфігурації теми =====
+   У Tailwind v4 тема налаштовується прямо в CSS через @theme
+   (замість tailwind.config.js з v3).
+   "inline" — utility-класи беруть значення з наших змінних :root,
+   тому день/ніч (data-theme) продовжує працювати. */
+@theme inline {
+  --color-primary: var(--primary-color);
+  --color-primary-dark: var(--primary-dark);
+  --color-accent: var(--accent-color);
+  --color-on-primary: var(--on-primary);
+  --color-surface: var(--surface-color);
+  --color-card: var(--card-color);
+  --color-line: var(--border-color);
+  --color-ink: var(--text-color);
+  --color-muted: var(--muted-color);
+
+  --font-heading: "Exo 2", "Segoe UI", Arial, sans-serif;
+  --font-body: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ===== Додаткове завдання: компонент кнопки через @apply =====
+   Той самий набір utility-класів, що на кнопці «Надіслати»,
+   але в одному класі .btn. Щоб спробувати, у index.html заміни
+   довгий class кнопки на class="btn". */
+@layer components {
+  .btn {
+    @apply justify-self-start px-6 py-3 rounded-lg bg-primary text-on-primary
+      font-heading font-bold cursor-pointer transition
+      hover:bg-primary-dark hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/40;
+  }
+}

@@ -2,8 +2,12 @@
    Sword Art Online: Айнкрад — фан-сайт
    Практичне заняття 5: CSS custom properties, типографіка,
    box-model, інтерактивні елементи.
+   Практичне 17: увесь цей файл у шарі @layer base,
+   тому utility-класи Tailwind мають вищий пріоритет.
    Палітра взята з неба над Айнкрадом: ніч + захід сонця.
    ========================================================= */
+
+@layer base {
 
 /* ===== 1. Custom properties (усі кольори тільки тут) ===== */
 :root {
@@ -342,6 +346,7 @@ img {
 }
 
 #story ul {
+  list-style: disc;
   margin: 0 0 var(--space-md);
   padding-left: 1.4rem;
 }
@@ -389,63 +394,7 @@ img {
 }
 
 /* ===== 12. Картки персонажів і кланів ===== */
-/* контейнер карток — flex (кроки 4-5) */
-#characters,
-#clans {
-  display: flex;
-  flex-wrap: wrap;                     /* картки переносяться на новий рядок */
-  gap: var(--space-md);                /* відступи між картками */
-}
-
-/* заголовок секції займає весь рядок */
-#characters > h2,
-#clans > h2 {
-  flex: 0 0 100%;
-  margin-bottom: 0;
-}
-
-article {
-  flex: 1 1 340px;                     /* крок 7: картки однакової ширини */
-  min-width: 0;
-  display: flex;                       /* крок 6: вміст картки теж flex */
-  flex-direction: column;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  background-color: var(--card-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  transition: transform var(--transition), border-color var(--transition),
-    box-shadow var(--transition);
-}
-
-#characters article {
-  border-top: 4px solid var(--primary-color);
-}
-
-#clans article {
-  border-top: 4px solid var(--accent-color);
-}
-
-article:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary-color);
-  box-shadow: 0 14px 30px rgba(255, 126, 179, 0.18);
-}
-
-article h3,
-article p {
-  margin: 0;
-}
-
-/* однакові пропорції портретів, щоб картки були рівними */
-article img {
-  width: 100%;
-  max-width: none;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: center 20%;
-  margin: 0;
-}
+/* Перенесено в Tailwind: див. utility-класи в index.html (Практичне 17) */
 
 /* ===== 13. Форма ===== */
 form {
@@ -524,30 +473,7 @@ input[type="checkbox"] {
 }
 
 /* ===== 14. Кнопка форми ===== */
-button {
-  justify-self: start;
-  padding: 0.85rem 2.2rem;
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--on-primary);
-  background-color: var(--primary-color);
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background-color var(--transition), transform var(--transition),
-    box-shadow var(--transition);
-}
-
-button:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(255, 126, 179, 0.38);
-}
-
-button:active {
-  transform: translateY(0);
-}
+/* Перенесено в Tailwind: див. utility-класи на кнопці в index.html (Практичне 17) */
 
 /* ===== 14c. Повідомлення форми та inline-підказки (Практичне 15) ===== */
 #form-message {
@@ -597,6 +523,9 @@ form input.valid:not([type="checkbox"]) {
 
 /* ===== 14a. Кнопка зміни теми (день / ніч) ===== */
 button.theme-toggle {
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition), border-color var(--transition);
   position: absolute;
   top: var(--space-md);
   right: var(--space-md);
@@ -705,4 +634,5 @@ footer p:last-child {
   * {
     transition: none !important;
   }
+}
 }

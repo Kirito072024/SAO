@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Tailwind: файл збирається командою npx @tailwindcss/cli (див. README). Підключаємо ПЕРЕД style.css -->
+  <link rel="stylesheet" href="src/output.css">
   <link rel="stylesheet" href="style.css">
 
   <!-- Тема день/ніч: читаємо збережений вибір, щоб сторінка не «блимала» при завантаженні -->
@@ -99,54 +101,56 @@
     </section>
 
     <!-- SECTION з ARTICLE: кожен персонаж — самодостатня картка -->
-    <section id="characters">
-      <h2>Персонажі</h2>
+    <!-- Tailwind: grid-cols-1 на телефоні, sm: 2 колонки, lg: 4 колонки; gap-4 — відступи між картками -->
+    <section id="characters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <h2 class="col-span-full mb-0">Персонажі</h2>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Кіріто</h3>
-        <img src="images/kirito.jpg" alt="Кіріто — Чорний мечник" width="200" height="300" style="height:auto">
+        <img class="w-full aspect-square object-cover object-top" src="images/kirito.jpg" alt="Кіріто — Чорний мечник" width="200" height="300" style="height:auto">
         <p>Гравець-одинак і колишній бета-тестер. Єдиний, хто володіє навичкою двох мечів.</p>
       </article>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Асуна</h3>
-        <img src="images/asuna.jpg" alt="Асуна — Блискавка" width="200" height="355">
+        <img class="w-full aspect-square object-cover object-top" src="images/asuna.jpg" alt="Асуна — Блискавка" width="200" height="355">
         <p>Майстриня рапіри, заступниця командира гільдії Лицарі Кривавої Клятви.</p>
       </article>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Клейн</h3>
-        <img src="images/klein.jpg" alt="Клейн — лідер гільдії Фурінкадзан">
+        <img class="w-full aspect-square object-cover object-top" src="images/klein.jpg" alt="Клейн — лідер гільдії Фурінкадзан">
         <p>Перший друг Кіріто в грі та лідер гільдії Фурінкадзан. Воїн із катаною.</p>
       </article>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Юі</h3>
-        <img src="images/yui.jpg" alt="Юі — штучний інтелект, донька Кіріто та Асуни">
+        <img class="w-full aspect-square object-cover object-top" src="images/yui.jpg" alt="Юі — штучний інтелект, донька Кіріто та Асуни">
         <p>Штучний інтелект, якого Кіріто й Асуна знаходять на 22-му поверсі та ростять як доньку.</p>
       </article>
     </section>
 
     <!-- SECTION з ARTICLE: гільдії -->
-    <section id="clans">
-      <h2>Клани та гільдії</h2>
+    <!-- Tailwind: на телефоні 1 колонка, з md: 2 колонки -->
+    <section id="clans" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2 class="col-span-full mb-0">Клани та гільдії</h2>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
         <h3>Лицарі Кривавої Клятви</h3>
         <p>Найсильніша гільдія Айнкрада, її очолює Хізкліф.</p>
       </article>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
         <h3>Aincrad Liberation Force («Армія»)</h3>
         <p>Найбільша гільдія гри, що стежила за порядком на нижніх поверхах.</p>
       </article>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
         <h3>Фурінкадзан</h3>
         <p>Дружня гільдія Клейна, яка часто допомагає Кіріто.</p>
       </article>
 
-      <article>
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
         <h3>Laughing Coffin</h3>
         <p>Злий клан убивць на чолі з PoH, що вбивав гравців заради розваги.</p>
       </article>
@@ -193,7 +197,7 @@
           <label for="agree">Погоджуюсь на обробку даних</label>
         </p>
 
-        <button type="submit">Надіслати</button>
+        <button type="submit" class="justify-self-start px-6 py-3 rounded-lg bg-primary text-on-primary font-heading font-bold cursor-pointer transition hover:bg-primary-dark hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/40">Надіслати</button>
 
         <!-- сюди script.js виводить повідомлення про помилку або успіх -->
         <div id="form-message" role="status"></div>

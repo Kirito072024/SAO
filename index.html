@@ -22,8 +22,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Айнкрад — летючий залізний замок у небі">
   <meta name="twitter:card" content="summary_large_image">
-  <!-- Практичне 23: порожня іконка — браузер не робить зайвий запит /favicon.ico (404) -->
-  <link rel="icon" href="data:,">
+  <!-- Практичне 26, кроки 6-7: PWA — manifest, колір панелі браузера та іконки.
+       Шлях відносний (без «/» на початку), щоб працював і в корені домену, і в підпапці GitHub Pages -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a0f3a">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 
   <!-- Практичне 23, крок 6: шрифти.
        Залишені лише потрібні накреслення (Exo 2: 600/700/800 — заголовки, Inter: 400/500 — текст),

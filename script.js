@@ -395,3 +395,20 @@ async function loadProjects() {
 
 loadNews();
 loadProjects();
+
+
+/* =========================================================
+   Практичне заняття 26, крок 8: реєстрація service worker (PWA)
+   Працює лише через http://localhost або https:// (не з file://)
+   ========================================================= */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js')
+      .then(function (registration) {
+        console.log('Service worker зареєстровано, scope:', registration.scope);
+      })
+      .catch(function (error) {
+        console.error('Не вдалося зареєструвати service worker:', error);
+      });
+  });
+}

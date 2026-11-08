@@ -231,11 +231,19 @@ form.addEventListener('submit', async function (event) {
   } catch (error) {
     // сюди потрапляємо і при помилці сервера, і коли немає мережі (Offline)
     console.error('Помилка відправки форми:', error);
-    // TypeError — це збій мережі (немає інтернету), інакше — помилка від сервера
-    const reason = error instanceof TypeError
-      ? 'Немає з\'єднання з інтернетом.'
-      : 'Сервер повернув помилку.';
-    showMessage('Не вдалося надіслати повідомлення. ' + reason + ' Спробуйте ще раз.\n(' + error.message + ')', 'error');
+    // Практичне 25, дефект D3: TypeError у fetch буває і без інтернету, і коли сервер вимкнений
+    // (інтернет при цьому є) — раніше в обох випадках писали «Немає з'єднання з інтернетом».
+    // navigator.onLine відрізняє ці ситуації. Технічний текст помилки (англійською, різний у
+    // Chrome і Firefox) лишається тільки в консолі, користувачу він нічого не каже.
+    let reason;
+    if (!navigator.onLine) {
+      reason = 'Немає з\'єднання з інтернетом.';
+    } else if (error instanceof TypeError) {
+      reason = 'Сервер зараз недоступний.';
+    } else {
+      reason = 'Сервер повернув помилку.';
+    }
+    showMessage('Не вдалося надіслати повідомлення. ' + reason + ' Спробуйте ще раз — введені дані збережено.', 'error');
   } finally {
     // кнопка знову доступна в будь-якому випадку
     submitButton.disabled = false;
@@ -373,7 +381,7 @@ async function loadProjects() {
       text.textContent = project.description;
 
       const tech = document.createElement('p');
-      tech.classList.add('news-tag');
+      tech.classList.add('project-tech');   // власний клас: .news-tag тепер «пігулка» для новин
       tech.textContent = project.tech.join(' · ');
 
       card.append(title, text, tech);

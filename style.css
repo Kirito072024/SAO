@@ -597,11 +597,16 @@ a.watch-link:hover {
 }
 
 /* ===== 14d. Блок «Новини» з API та стан кнопки (Практичне 18) ===== */
-#news code {
+/* Практичне 25, дефект D2: було #news code — після перенесення «Моїх проєктів» в окрему секцію
+   (Практичне 24) <code> там втратив оформлення. Тепер правило для всіх <code>.
+   overflow-wrap: anywhere — довгий URL переноситься, а не розпирає сторінку на 320 px
+   (Firefox переносив URL після «/» сам, Chrome/Edge — ні, звідси горизонтальний скрол) */
+code {
   padding: 0.1rem 0.4rem;
   font-size: 0.95em;
   background-color: var(--field-color);
   border-radius: 6px;
+  overflow-wrap: anywhere;
 }
 
 #news-list {
@@ -611,7 +616,27 @@ a.watch-link:hover {
   color: var(--muted-color);
 }
 
+/* Практичне 25, дефект D1: script.js додає класи .timeline, .news-meta, .news-date, .news-tag,
+   але їхні стилі були лише в index.css, який сторінка не підключає.
+   Перенесено сюди: лінія часу, точки, дата і тег-«пігулка» з відступом між ними. */
+#news-list.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+#news-list.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 7px;
+  width: 2px;
+  border-radius: 1px;
+  background-image: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+}
+
 .news-item {
+  position: relative;
   padding: var(--space-md);
   color: var(--text-color);
   background-color: var(--card-color);
@@ -620,9 +645,55 @@ a.watch-link:hover {
   border-radius: var(--radius-sm);
 }
 
+/* точка на лінії часу */
+.news-item::before {
+  content: "";
+  position: absolute;
+  top: 1.35rem;
+  left: calc(-2rem + 1px);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: 3px solid var(--surface-color);
+  box-sizing: content-box;
+  translate: -3px -3px;
+}
+
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.news-date {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent-color);
+}
+
+.news-tag {
+  padding: 0.1rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-radius: 999px;
+}
+
+/* Дефект D1: text-transform: capitalize лишився з часів jsonplaceholder (латиниця в нижньому регістрі)
+   і перетворював «Перший бос переможений» на «Перший Бос Переможений» — прибрано */
 .news-item h3 {
   margin: 0 0 var(--space-sm);
-  text-transform: capitalize;
+}
+
+/* технології під карткою проєкту (Практичне 22) */
+.project-tech {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted-color);
 }
 
 .news-item p {

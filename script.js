@@ -61,6 +61,9 @@ const themeButton = document.querySelector('#theme-toggle');
 function setTheme(theme) {
   root.setAttribute('data-theme', theme);
   themeButton.textContent = theme === 'dark' ? '☀️ День' : '🌙 Ніч';
+  // Практичне 24: скрінрідер прочитає зрозумілу дію замість «сонце День».
+  // Видимий текст («День»/«Ніч») має входити в aria-label (WCAG 2.5.3), тому він стоїть на початку
+  themeButton.setAttribute('aria-label', theme === 'dark' ? 'День: увімкнути денну тему' : 'Ніч: увімкнути нічну тему');
   try {
     localStorage.setItem('theme', theme);
   } catch (error) {
@@ -137,6 +140,7 @@ function getPhoneError(phone) {
 /* ----- Прибрати підсвітку й підказку поля (після успішної відправки) ----- */
 function clearFieldState(input, hint) {
   input.classList.remove('valid', 'invalid');
+  input.removeAttribute('aria-invalid');
   hint.textContent = '';
   hint.classList.remove('error', 'success');
 }
@@ -251,19 +255,24 @@ function attachInlineValidation(input, hint, getError, okText) {
 
     if (value === '') {
       hint.textContent = '';
+      input.removeAttribute('aria-invalid');
       return;
     }
 
     const error = getError(value);
 
+    // Практичне 24: aria-invalid — скрінрідер повідомить, що поле заповнено з помилкою
+    // (червона рамка .invalid видна лише очима)
     if (error !== '') {
       hint.textContent = error;
       hint.classList.add('error');
       input.classList.add('invalid');
+      input.setAttribute('aria-invalid', 'true');
     } else {
       hint.textContent = okText;
       hint.classList.add('success');
       input.classList.add('valid');
+      input.setAttribute('aria-invalid', 'false');
     }
   });
 }

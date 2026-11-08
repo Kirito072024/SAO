@@ -3,8 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SAO — Айнкрад</title>
+  <!-- Практичне 24, крок 2: унікальний title (до ~60 символів) і description (до 160 символів) -->
+  <title>Sword Art Online: Айнкрад — фан-сайт про світ SAO</title>
   <meta name="description" content="Фан-сайт про Sword Art Online: світ Айнкрада, механіка гри, історія, персонажі та гільдії.">
+  <link rel="canonical" href="https://kirito072024.github.io/SAO/">
+
+  <!-- Практичне 24, крок 3: Open Graph — гарне превʼю посилання в Telegram, Viber, Facebook тощо.
+       Адреси мають бути абсолютними: тут — адреса сайту на GitHub Pages
+       (якщо сайт опубліковано за іншою адресою, замініть її в og:url, og:image і canonical) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="uk_UA">
+  <meta property="og:site_name" content="SAO — Айнкрад">
+  <meta property="og:title" content="Sword Art Online: Айнкрад">
+  <meta property="og:description" content="Механіка гри, історія, персонажі та гільдії летючого замку Айнкрад.">
+  <meta property="og:url" content="https://kirito072024.github.io/SAO/">
+  <meta property="og:image" content="https://kirito072024.github.io/SAO/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Айнкрад — летючий залізний замок у небі">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- Практичне 23: порожня іконка — браузер не робить зайвий запит /favicon.ico (404) -->
   <link rel="icon" href="data:,">
 
@@ -31,6 +48,10 @@
 </head>
 <body>
 
+  <!-- Практичне 24, додаткове завдання: skip link — перше, куди потрапляє Tab;
+       дозволяє одразу перейти до вмісту, минаючи шапку та меню -->
+  <a class="skip-link" href="#main">Перейти до основного вмісту</a>
+
   <!-- HEADER: шапка сайту з назвою проєкту. Єдиний h1 на всій сторінці -->
   <header>
     <!-- Кнопка зміни теми: день / ніч (скрипт — внизу сторінки) -->
@@ -52,13 +73,15 @@
         <li><a href="#characters">Персонажі</a></li>
         <li><a href="#clans">Клани</a></li>
         <li><a href="#news">Новини</a></li>
+        <li><a href="#projects">Проєкти</a></li>
         <li><a href="#contacts">Контакти</a></li>
       </ul>
     </nav>
   </header>
 
   <!-- MAIN: основний вміст сторінки (на сторінці лише один main) -->
-  <main>
+  <!-- id="main" — ціль для skip link; tabindex="-1" — щоб фокус справді переходив сюди -->
+  <main id="main" tabindex="-1">
 
     <!-- SECTION: вступ -->
     <section id="home">
@@ -178,8 +201,12 @@
       <h2>Новини Айнкраду</h2>
       <p>Хроніка головних подій світу SAO. Записи завантажуються скриптом через <code>fetch</code> з файлу <code>news.json</code>.</p>
       <div id="news-list" aria-live="polite"></div>
+    </section>
 
-      <h3>Мої проєкти (власний API)</h3>
+    <!-- SECTION: мої проєкти (Практичне 22). Практичне 24, крок 4: окрема секція з h2 —
+         раніше заголовок h3 «Мої проєкти» і картки опинялися всередині «Новин» -->
+    <section id="projects">
+      <h2>Мої проєкти</h2>
       <p>Картки приходять з мого Node.js-сервера: GET-запит до <code>http://localhost:3000/api/projects</code>.</p>
       <div id="projects-list" class="grid grid-cols-1 md:grid-cols-2 gap-4" aria-live="polite"></div>
     </section>
@@ -194,12 +221,13 @@
 
         <p>
           <label for="name">Ім'я:</label>
-          <input type="text" id="name" name="name" placeholder="Як до тебе звертатися" required>
+          <input type="text" id="name" name="name" placeholder="Як до тебе звертатися" autocomplete="name" required>
         </p>
 
         <p>
           <label for="email">Електронна пошта:</label>
-          <input type="email" id="email" name="email" placeholder="name@example.com" required>
+          <!-- Практичне 24, крок 8: aria-describedby — скрінрідер прочитає підказку разом із полем -->
+          <input type="email" id="email" name="email" placeholder="name@example.com" autocomplete="email" required aria-describedby="email-hint">
           <!-- inline-підказка під полем (заповнюється в script.js під час вводу) -->
           <small id="email-hint" class="field-hint"></small>
         </p>
@@ -207,7 +235,7 @@
         <!-- Практичне 21: телефон у форматі +380XXXXXXXXX (перевірка в script.js) -->
         <p>
           <label for="phone">Телефон:</label>
-          <input type="tel" id="phone" name="phone" placeholder="+380501234567" required>
+          <input type="tel" id="phone" name="phone" placeholder="+380501234567" autocomplete="tel" required aria-describedby="phone-hint">
           <small id="phone-hint" class="field-hint"></small>
         </p>
 

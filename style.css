@@ -61,7 +61,7 @@
 :root[data-theme="light"] {
   --primary-color: #d6336c;
   --primary-dark: #b82459;
-  --accent-color: #a85d00;
+  --accent-color: #995400;    /* Практичне 24: було #a85d00 — 4.46:1 на картках, тепер ≥ 4.6:1 на всіх фонах */
   --danger-color: #d12a4a;
   --success-color: #18794e;
   --text-color: #241b3f;
@@ -181,6 +181,32 @@ a {
 a:hover {
   color: var(--accent-color);
   border-bottom-color: currentColor;
+}
+
+/* Практичне 24, додаткове завдання: skip link «Перейти до основного вмісту».
+   Схований за межами екрана, з'являється при першому натисканні Tab */
+.skip-link {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 100;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  background: var(--primary-color);
+  color: var(--on-primary);
+  font-weight: 500;
+  transform: translateY(-200%);
+  transition: transform var(--transition);
+}
+
+/* main отримує фокус від skip link програмно — рамка навколо всього вмісту не потрібна */
+main:focus {
+  outline: none;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  color: var(--on-primary);
 }
 
 a:focus-visible,

@@ -1,9 +1,13 @@
 /* =========================================================
    Практичне заняття 17: вхідний файл Tailwind CSS (v4)
-   Збірка:  npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
+   Збірка:  npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --minify
+   (під час розробки можна додати --watch)
    ========================================================= */
 
 @import "tailwindcss";
+
+/* Практичне 23: не скануємо окремий React-проєкт — менше зайвих класів в output.css */
+@source not "../sao-react";
 
 /* ===== Крок 7. Кольори проєкту в конфігурації теми =====
    У Tailwind v4 тема налаштовується прямо в CSS через @theme

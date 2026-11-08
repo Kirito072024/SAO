@@ -4,9 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SAO — Айнкрад</title>
+  <meta name="description" content="Фан-сайт про Sword Art Online: світ Айнкрада, механіка гри, історія, персонажі та гільдії.">
+  <!-- Практичне 23: порожня іконка — браузер не робить зайвий запит /favicon.ico (404) -->
+  <link rel="icon" href="data:,">
+
+  <!-- Практичне 23, крок 6: шрифти.
+       Залишені лише потрібні накреслення (Exo 2: 600/700/800 — заголовки, Inter: 400/500 — текст),
+       display=swap — текст одразу видно системним шрифтом.
+       preload + onload — CSS шрифтів більше не блокує першу відмальовку сторінки. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;500&display=swap"></noscript>
   <!-- Tailwind: файл збирається командою npx @tailwindcss/cli (див. README). Підключаємо ПЕРЕД style.css -->
   <link rel="stylesheet" href="src/output.css">
   <link rel="stylesheet" href="style.css">
@@ -63,8 +72,13 @@
     <!-- SECTION: опис Айнкрада -->
     <section id="aincrad">
       <h2>Айнкрад</h2>
-      <!-- height:auto зберігає пропорції, навіть якщо height вказано приблизно -->
-      <img src="images/aincrad.jpg" alt="Айнкрад — летючий залізний замок у небі" width="480" height="270" style="height:auto">
+      <!-- Практичне 23: WebP 480/960 px замість JPG 1199 px; srcset — браузер сам бере потрібний розмір.
+           width/height задають пропорцію 16:9 заздалегідь — немає зсуву макета (CLS).
+           lazy — на телефоні картинка нижче першого екрана -->
+      <img src="images/aincrad-480.webp"
+           srcset="images/aincrad-480.webp 480w, images/aincrad-960.webp 960w"
+           sizes="(max-width: 540px) 100vw, 480px"
+           alt="Айнкрад — летючий залізний замок у небі" width="480" height="270" loading="lazy" decoding="async">
       <p>Айнкрад — величезний залізний замок, що висить у небі. Він складається зі 100 поверхів. На кожному є місто, лабіринт і бос, якого потрібно перемогти.</p>
     </section>
 
@@ -108,25 +122,27 @@
 
       <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Кіріто</h3>
-        <img class="w-full aspect-square object-cover object-top" src="images/kirito.jpg" alt="Кіріто — Чорний мечник" width="200" height="300" style="height:auto">
+        <!-- Практичне 23: квадратні WebP 400/800 px (обрізані зверху, як object-top), lazy — картки нижче першого екрана,
+             width/height 400×400 — реальна пропорція 1:1, тож місце під картинку резервується заздалегідь -->
+        <img class="w-full aspect-square object-cover object-top" src="images/kirito-400.webp" srcset="images/kirito-400.webp 400w, images/kirito-800.webp 800w" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" alt="Кіріто — Чорний мечник" width="400" height="400" loading="lazy" decoding="async">
         <p>Гравець-одинак і колишній бета-тестер. Єдиний, хто володіє навичкою двох мечів.</p>
       </article>
 
       <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Асуна</h3>
-        <img class="w-full aspect-square object-cover object-top" src="images/asuna.jpg" alt="Асуна — Блискавка" width="200" height="355">
+        <img class="w-full aspect-square object-cover object-top" src="images/asuna-400.webp" srcset="images/asuna-400.webp 400w, images/asuna-800.webp 800w" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" alt="Асуна — Блискавка" width="400" height="400" loading="lazy" decoding="async">
         <p>Майстриня рапіри, заступниця командира гільдії Лицарі Кривавої Клятви.</p>
       </article>
 
       <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Клейн</h3>
-        <img class="w-full aspect-square object-cover object-top" src="images/klein.jpg" alt="Клейн — лідер гільдії Фурінкадзан">
+        <img class="w-full aspect-square object-cover object-top" src="images/klein-400.webp" srcset="images/klein-400.webp 400w, images/klein-800.webp 800w" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" alt="Клейн — лідер гільдії Фурінкадзан" width="400" height="400" loading="lazy" decoding="async">
         <p>Перший друг Кіріто в грі та лідер гільдії Фурінкадзан. Воїн із катаною.</p>
       </article>
 
       <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
         <h3>Юі</h3>
-        <img class="w-full aspect-square object-cover object-top" src="images/yui.jpg" alt="Юі — штучний інтелект, донька Кіріто та Асуни">
+        <img class="w-full aspect-square object-cover object-top" src="images/yui-400.webp" srcset="images/yui-400.webp 400w, images/yui-800.webp 800w" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" alt="Юі — штучний інтелект, донька Кіріто та Асуни" width="400" height="400" loading="lazy" decoding="async">
         <p>Штучний інтелект, якого Кіріто й Асуна знаходять на 22-му поверсі та ростять як доньку.</p>
       </article>
     </section>

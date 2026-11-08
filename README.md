@@ -38,7 +38,7 @@ SAO/
 Збірка стилів (потрібен Node.js 20+):
 ```
 npm install
-npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
+npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --minify
 ```
 
 ## Tailwind проти звичайного CSS

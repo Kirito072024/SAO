@@ -1,0 +1,62 @@
+/* Стилі інтерактивних елементів Практичного 20 (лічильник, фільтр, привітання) */
+
+/* кнопка лічильника в картці */
+.like-btn {
+  align-self: flex-start;
+  padding: 0.45rem 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition);
+}
+
+.like-btn:hover {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* панель фільтра займає весь рядок сітки */
+.filter-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.filter-btn {
+  padding: 0.45rem 1.1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+    border-color var(--transition);
+}
+
+.filter-btn:hover {
+  border-color: var(--primary-color);
+}
+
+.filter-btn.active {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* привітання під полем (оновлюється під час введення) */
+.greeting {
+  min-height: 1.7em;
+  font-size: 1.1rem;
+  color: var(--accent-color);
+}

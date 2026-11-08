@@ -90,8 +90,9 @@ const emailHint = document.querySelector('#email-hint');
 const phoneInput = document.querySelector('#phone');
 const phoneHint = document.querySelector('#phone-hint');
 
-/* ----- Практичне 18: адреса тестового API і кнопка відправки ----- */
-const API_URL = 'https://jsonplaceholder.typicode.com';
+/* ----- Практичне 22: адреса власного API (папка server, node server.js) і кнопка відправки -----
+   Раніше (Практичне 18) тут був тестовий https://jsonplaceholder.typicode.com */
+const API_URL = 'http://localhost:3000/api';
 const submitButton = form.querySelector('button[type="submit"]');
 const submitButtonText = submitButton.textContent;
 
@@ -199,7 +200,7 @@ form.addEventListener('submit', async function (event) {
 
   try {
     // Крок 6: POST-запит із JSON
-    const response = await fetch(API_URL + '/posts', {
+    const response = await fetch(API_URL + '/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -213,7 +214,12 @@ form.addEventListener('submit', async function (event) {
     const result = await response.json();
     console.log('Відповідь сервера:', result);
 
-    showMessage('Дякуємо, ' + name + '! Повідомлення надіслано (id на сервері: ' + result.id + ').', 'success');
+    // наш сервер відповідає { ok: true }
+    if (!result.ok) {
+      throw new Error(result.error || 'Сервер не прийняв повідомлення');
+    }
+
+    showMessage('Дякуємо, ' + name + '! Повідомлення надіслано на сервер.', 'success');
 
     form.reset();
     clearFieldState(emailInput, emailHint);
@@ -326,32 +332,49 @@ async function loadNews() {
   }
 }
 
-/* ----- Крок 3 з аркуша: GET /posts?_limit=3 — заголовки з тестового API ----- */
-const apiList = document.querySelector('#api-list');
+/* ----- Практичне 22, крок 7: картки проєктів із власного API (GET /api/projects) ----- */
+const projectsList = document.querySelector('#projects-list');
 
-async function loadApiPosts() {
+// ті самі Tailwind-класи, що й у статичних карток гільдій
+const PROJECT_CARD_CLASSES = 'flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent';
+
+async function loadProjects() {
+  projectsList.textContent = 'Завантаження проєктів…';
+
   try {
-    const response = await fetch(API_URL + '/posts?_limit=3');
+    const response = await fetch(API_URL + '/projects');
 
     if (!response.ok) {
       throw new Error('Сервер відповів зі статусом ' + response.status);
     }
 
-    const posts = await response.json();
-    console.log('Отримано пости з API:', posts);
+    const projects = await response.json();
+    console.log('Отримано проєкти з власного API:', projects);
 
-    posts.forEach(function (post) {
-      const li = document.createElement('li');
-      li.textContent = post.title;
-      apiList.append(li);
+    projectsList.textContent = '';
+
+    projects.forEach(function (project) {
+      const card = document.createElement('article');
+      card.className = PROJECT_CARD_CLASSES;
+
+      const title = document.createElement('h3');
+      title.textContent = project.title;     // textContent — безпечно для даних із сервера
+
+      const text = document.createElement('p');
+      text.textContent = project.description;
+
+      const tech = document.createElement('p');
+      tech.classList.add('news-tag');
+      tech.textContent = project.tech.join(' · ');
+
+      card.append(title, text, tech);
+      projectsList.append(card);
     });
   } catch (error) {
-    console.error('Не вдалося завантажити пости з API:', error);
-    const li = document.createElement('li');
-    li.textContent = 'Не вдалося завантажити дані з API.';
-    apiList.append(li);
+    console.error('Не вдалося завантажити проєкти з API:', error);
+    projectsList.textContent = 'Не вдалося завантажити проєкти. Запустіть сервер (cd server, npm start) і оновіть сторінку.';
   }
 }
 
 loadNews();
-loadApiPosts();
+loadProjects();

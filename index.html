@@ -1,20 +1,245 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uk">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SAO — Айнкрад (React)</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAO — Айнкрад</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Tailwind: файл збирається командою npx @tailwindcss/cli (див. README). Підключаємо ПЕРЕД style.css -->
+  <link rel="stylesheet" href="src/output.css">
+  <link rel="stylesheet" href="style.css">
 
-    <!-- Шрифти Google Fonts (як на статичному сайті) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <!-- Тема день/ніч: читаємо збережений вибір, щоб сторінка не «блимала» при завантаженні -->
+  <script>
+    (function () {
+      var theme = 'dark';
+      try { theme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- HEADER: шапка сайту з назвою проєкту. Єдиний h1 на всій сторінці -->
+  <header>
+    <!-- Кнопка зміни теми: день / ніч (скрипт — внизу сторінки) -->
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Змінити тему">☀️ День</button>
+
+    <h1>Sword Art Online: Айнкрад</h1>
+    <p>Фан-сайт про механіку гри, історію та героїв</p>
+
+    <!-- NAV: головне меню, посилання-якорі ведуть до секцій за id -->
+    <nav aria-label="Головне меню">
+      <!-- Лого: лівий блок flex-навігації -->
+      <a class="logo" href="#home">SAO</a>
+
+      <ul>
+        <li><a href="#home">Головна</a></li>
+        <li><a href="#aincrad">Айнкрад</a></li>
+        <li><a href="#mechanics">Механіка гри</a></li>
+        <li><a href="#story">Історія</a></li>
+        <li><a href="#characters">Персонажі</a></li>
+        <li><a href="#clans">Клани</a></li>
+        <li><a href="#news">Новини</a></li>
+        <li><a href="#contacts">Контакти</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- MAIN: основний вміст сторінки (на сторінці лише один main) -->
+  <main>
+
+    <!-- SECTION: вступ -->
+    <section id="home">
+      <h2>Ласкаво просимо</h2>
+      <p>6 листопада 2022 року десять тисяч гравців увійшли в гру Sword Art Online і не змогли з неї вийти. Тут ти дізнаєшся, як влаштований світ гри, що сталося на початку та хто в ньому виживав.</p>
+      <p>
+        <a class="watch-link" href="https://uakino.best/animeukr/anime-series/10037-svord-art-onlayn-1-sezon.html" target="_blank" rel="noopener noreferrer">Дивитися Sword Art Online, 1 сезон</a>
+      </p>
+    </section>
+
+    <!-- SECTION: опис Айнкрада -->
+    <section id="aincrad">
+      <h2>Айнкрад</h2>
+      <!-- height:auto зберігає пропорції, навіть якщо height вказано приблизно -->
+      <img src="images/aincrad.jpg" alt="Айнкрад — летючий залізний замок у небі" width="480" height="270" style="height:auto">
+      <p>Айнкрад — величезний залізний замок, що висить у небі. Він складається зі 100 поверхів. На кожному є місто, лабіринт і бос, якого потрібно перемогти.</p>
+    </section>
+
+    <!-- SECTION: правила та механіка гри -->
+    <section id="mechanics">
+      <h2>Механіка гри</h2>
+      <ul>
+        <li>Шолом NerveGear занурює гравця у віртуальний світ повністю.</li>
+        <li>Магії немає: бої ведуться мечами та навичками меча.</li>
+        <li>Є рівні, смужка HP, інвентар і гільдії.</li>
+        <li>Смерть у грі означає смерть у реальності.</li>
+      </ul>
+    </section>
+
+    <!-- SECTION: історія початку -->
+    <section id="story">
+      <h2>Чому гра стала смертельною</h2>
+      <p>Творець гри Каяба Акіхіко оголосив у Місті Початку, що вийти з гри неможливо. Щоб повернутись додому, потрібно пройти всі 100 поверхів. За два роки загинуло близько 4000 гравців.</p>
+
+      <!-- Переказ промови Каяби (власними словами, не дослівна цитата) -->
+      <h3>Що Каяба сказав гравцям на початку гри</h3>
+      <p>Коли гравці вперше увійшли в гру, їх несподівано телепортувало на головну площу Міста Початку. Небо стало червоним, а над площею з'явилася велетенська постать у плащі з капюшоном. Це був Каяба Акіхіко, творець Sword Art Online. Він коротко пояснив нові правила:</p>
+      <ul>
+        <li>Кнопки виходу з гри більше немає, і це не помилка, а задум творця.</li>
+        <li>Зняти шолом NerveGear ззовні не можна: той, хто спробує це зробити, загине.</li>
+        <li>Якщо HP гравця впаде до нуля, його персонаж зникне, а разом з ним помре й сам гравець.</li>
+        <li>Єдиний спосіб вийти — пройти всі 100 поверхів Айнкрада й перемогти останнього боса.</li>
+        <li>Частина людей уже загинула, а це лише початок.</li>
+      </ul>
+      <p>Наприкінці Каяба зробив ще один хід: кожен гравець знайшов у інвентарі дзеркальце, і в його відображенні з'явилося справжнє обличчя. Усі аватари раптом стали схожими на реальних людей.</p>
+
+      <h3>Невелика історія: перший день у пастці</h3>
+      <p>Гравці спершу не вірили. Хтось сміявся, що це частина сценарію, хтось шукав меню виходу в усіх закутках інтерфейсу. Але коли над площею загула тривожна тиша, стало зрозуміло, що жарти скінчилися. Десять тисяч людей стояли пліч-о-пліч, і кожен думав про те, що чекає вдома.</p>
+      <p>Поки натовп кричав і плакав, Кіріто вже ухвалив рішення. Як колишній бета-тестер він знав, що ресурсів на нижніх поверхах мало, а нових гравців занадто багато. Він швидко знайшов Клейна, показав, куди йти по перший досвід, і пішов далі самотою, щоб не підставити друзів. Так для нього почалася гра, у якій кожен день міг стати останнім.</p>
+    </section>
+
+    <!-- SECTION з ARTICLE: кожен персонаж — самодостатня картка -->
+    <!-- Tailwind: grid-cols-1 на телефоні, sm: 2 колонки, lg: 4 колонки; gap-4 — відступи між картками -->
+    <section id="characters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <h2 class="col-span-full mb-0">Персонажі</h2>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
+        <h3>Кіріто</h3>
+        <img class="w-full aspect-square object-cover object-top" src="images/kirito.jpg" alt="Кіріто — Чорний мечник" width="200" height="300" style="height:auto">
+        <p>Гравець-одинак і колишній бета-тестер. Єдиний, хто володіє навичкою двох мечів.</p>
+      </article>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
+        <h3>Асуна</h3>
+        <img class="w-full aspect-square object-cover object-top" src="images/asuna.jpg" alt="Асуна — Блискавка" width="200" height="355">
+        <p>Майстриня рапіри, заступниця командира гільдії Лицарі Кривавої Клятви.</p>
+      </article>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
+        <h3>Клейн</h3>
+        <img class="w-full aspect-square object-cover object-top" src="images/klein.jpg" alt="Клейн — лідер гільдії Фурінкадзан">
+        <p>Перший друг Кіріто в грі та лідер гільдії Фурінкадзан. Воїн із катаною.</p>
+      </article>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-primary">
+        <h3>Юі</h3>
+        <img class="w-full aspect-square object-cover object-top" src="images/yui.jpg" alt="Юі — штучний інтелект, донька Кіріто та Асуни">
+        <p>Штучний інтелект, якого Кіріто й Асуна знаходять на 22-му поверсі та ростять як доньку.</p>
+      </article>
+    </section>
+
+    <!-- SECTION з ARTICLE: гільдії -->
+    <!-- Tailwind: на телефоні 1 колонка, з md: 2 колонки -->
+    <section id="clans" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2 class="col-span-full mb-0">Клани та гільдії</h2>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
+        <h3>Лицарі Кривавої Клятви</h3>
+        <p>Найсильніша гільдія Айнкрада, її очолює Хізкліф.</p>
+      </article>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
+        <h3>Aincrad Liberation Force («Армія»)</h3>
+        <p>Найбільша гільдія гри, що стежила за порядком на нижніх поверхах.</p>
+      </article>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
+        <h3>Фурінкадзан</h3>
+        <p>Дружня гільдія Клейна, яка часто допомагає Кіріто.</p>
+      </article>
+
+      <article class="flex flex-col gap-2 min-w-0 p-4 rounded-2xl bg-card border border-line shadow-md transition hover:-translate-y-1 hover:border-primary hover:shadow-lg *:m-0 border-t-4 border-t-accent">
+        <h3>Laughing Coffin</h3>
+        <p>Злий клан убивць на чолі з PoH, що вбивав гравців заради розваги.</p>
+      </article>
+    </section>
+
+    <!-- SECTION: новини (Практичне 18): картки створює script.js через fetch з news.json -->
+    <section id="news">
+      <h2>Новини Айнкраду</h2>
+      <p>Хроніка головних подій світу SAO. Записи завантажуються скриптом через <code>fetch</code> з файлу <code>news.json</code>.</p>
+      <div id="news-list" aria-live="polite"></div>
+
+      <h3>Відгуки з тестового API</h3>
+      <p>Приклад GET-запиту до <code>jsonplaceholder.typicode.com/posts?_limit=3</code>: заголовки трьох записів.</p>
+      <ul id="api-list"></ul>
+    </section>
+
+    <!-- SECTION: форма зворотного зв'язку -->
+    <section id="contacts">
+      <h2>Контакти</h2>
+
+      <!-- action="#" — заглушка; method="get" показує введені дані в адресному рядку -->
+      <!-- novalidate: вимикаємо стандартну перевірку браузера, валідацію робить script.js -->
+      <form action="#" method="get" novalidate>
+
+        <p>
+          <label for="name">Ім'я:</label>
+          <input type="text" id="name" name="name" placeholder="Як до тебе звертатися" required>
+        </p>
+
+        <p>
+          <label for="email">Електронна пошта:</label>
+          <input type="email" id="email" name="email" placeholder="name@example.com" required>
+          <!-- inline-підказка під полем (заповнюється в script.js під час вводу) -->
+          <small id="email-hint" class="field-hint"></small>
+        </p>
+
+        <!-- Практичне 21: телефон у форматі +380XXXXXXXXX (перевірка в script.js) -->
+        <p>
+          <label for="phone">Телефон:</label>
+          <input type="tel" id="phone" name="phone" placeholder="+380501234567" required>
+          <small id="phone-hint" class="field-hint"></small>
+        </p>
+
+        <!-- Додаткове завдання: вибір теми звернення -->
+        <p>
+          <label for="topic">Тема звернення:</label>
+          <select id="topic" name="topic">
+            <option value="question">Питання про сайт</option>
+            <option value="idea">Ідея для розділу</option>
+            <option value="other">Інше</option>
+          </select>
+        </p>
+
+        <p>
+          <label for="message">Повідомлення:</label><br>
+          <textarea id="message" name="message" rows="5" cols="40" placeholder="Напиши, що хочеш запитати" required></textarea>
+        </p>
+
+        <!-- Додаткове завдання: згода на обробку даних -->
+        <p>
+          <input type="checkbox" id="agree" name="agree" required>
+          <label for="agree">Погоджуюсь на обробку даних</label>
+        </p>
+
+        <button type="submit" class="justify-self-start px-6 py-3 rounded-lg bg-primary text-on-primary font-heading font-bold cursor-pointer transition hover:bg-primary-dark hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/40">Надіслати</button>
+
+        <!-- сюди script.js виводить повідомлення про помилку або успіх -->
+        <div id="form-message" role="status"></div>
+      </form>
+    </section>
+
+    <!-- ASIDE: побічна інформація, не обов'язкова для розуміння основного тексту -->
+    <aside>
+      <h2>Цікавий факт</h2>
+      <p>Гільдії в Sword Art Online можна було створити лише після виконання квесту на 3-му поверсі.</p>
+    </aside>
+
+  </main>
+
+  <!-- FOOTER: підвал сайту з авторством і контактами -->
+  <footer>
+    <p>Фан-проєкт для навчання. Sword Art Online створив Рекі Кавахара, аніме зробила студія A-1 Pictures.</p>
+    <p>&copy; <span id="current-year">2026</span> SAO — Айнкрад</p>
+    <p>Автор: <a href="https://github.com/Kirito072024/SAO">Kirito072024 на GitHub</a></p>
+  </footer>
+
+  <!-- Практичне 14: підключення script.js (defer — виконується після побудови DOM) -->
+  <script src="script.js" defer></script>
+
+</body>
 </html>

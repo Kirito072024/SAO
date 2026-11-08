@@ -87,6 +87,8 @@ const messageInput = document.querySelector('#message');
 const agreeInput = document.querySelector('#agree');
 const formMessage = document.querySelector('#form-message');
 const emailHint = document.querySelector('#email-hint');
+const phoneInput = document.querySelector('#phone');
+const phoneHint = document.querySelector('#phone-hint');
 
 /* ----- Практичне 18: адреса тестового API і кнопка відправки ----- */
 const API_URL = 'https://jsonplaceholder.typicode.com';
@@ -115,6 +117,29 @@ function getEmailError(email) {
   return '';
 }
 
+/* ----- Перевірка телефону (Практичне 21): формат +380XXXXXXXXX ----- */
+function getPhoneError(phone) {
+  if (phone === '') {
+    return 'Введіть номер телефону.';
+  }
+
+  // пробіли, дужки та дефіси дозволені — прибираємо їх перед перевіркою
+  const digits = phone.replace(/[\s()-]/g, '');
+
+  if (!/^\+380\d{9}$/.test(digits)) {
+    return 'Телефон має бути у форматі +380XXXXXXXXX (9 цифр після +380).';
+  }
+
+  return '';
+}
+
+/* ----- Прибрати підсвітку й підказку поля (після успішної відправки) ----- */
+function clearFieldState(input, hint) {
+  input.classList.remove('valid', 'invalid');
+  hint.textContent = '';
+  hint.classList.remove('error', 'success');
+}
+
 /* ----- Крок 3: обробник submit з preventDefault ----- */
 form.addEventListener('submit', async function (event) {
   event.preventDefault(); // сторінка не перезавантажується
@@ -122,6 +147,7 @@ form.addEventListener('submit', async function (event) {
   // Крок 4: значення полів
   const name = nameInput.value.trim();
   const email = emailInput.value.trim();
+  const phone = phoneInput.value.trim();
   const message = messageInput.value.trim();
 
   // Крок 5: проста JS-валідація
@@ -134,6 +160,11 @@ form.addEventListener('submit', async function (event) {
   const emailError = getEmailError(email);
   if (emailError !== '') {
     errors.push(emailError);
+  }
+
+  const phoneError = getPhoneError(phone);
+  if (phoneError !== '') {
+    errors.push(phoneError);
   }
 
   if (message === '') {
@@ -155,6 +186,7 @@ form.addEventListener('submit', async function (event) {
   const data = {
     name: name,
     email: email,
+    phone: phone.replace(/[\s()-]/g, ''),
     topic: document.querySelector('#topic').value,
     message: message
   };
@@ -184,9 +216,8 @@ form.addEventListener('submit', async function (event) {
     showMessage('Дякуємо, ' + name + '! Повідомлення надіслано (id на сервері: ' + result.id + ').', 'success');
 
     form.reset();
-    emailInput.classList.remove('valid', 'invalid');
-    emailHint.textContent = '';
-    emailHint.classList.remove('error', 'success');
+    clearFieldState(emailInput, emailHint);
+    clearFieldState(phoneInput, phoneHint);
   } catch (error) {
     // сюди потрапляємо і при помилці сервера, і коли немає мережі (Offline)
     console.error('Помилка відправки форми:', error);
@@ -202,30 +233,37 @@ form.addEventListener('submit', async function (event) {
   }
 });
 
-/* ----- Крок 7 (додатково): inline-перевірка email під час вводу ----- */
-emailInput.addEventListener('input', function () {
-  const value = emailInput.value.trim();
+/* ----- Крок 7 (додатково) + Практичне 21: inline-перевірка під час вводу -----
+   Одна універсальна функція замість окремих слухачів для кожного поля
+   (рефакторинг: було дублювання коду для email, стало повторне використання) */
+function attachInlineValidation(input, hint, getError, okText) {
+  input.addEventListener('input', function () {
+    const value = input.value.trim();
 
-  emailHint.classList.remove('error', 'success');
-  emailInput.classList.remove('valid', 'invalid');
+    hint.classList.remove('error', 'success');
+    input.classList.remove('valid', 'invalid');
 
-  if (value === '') {
-    emailHint.textContent = '';
-    return;
-  }
+    if (value === '') {
+      hint.textContent = '';
+      return;
+    }
 
-  const error = getEmailError(value);
+    const error = getError(value);
 
-  if (error !== '') {
-    emailHint.textContent = error;
-    emailHint.classList.add('error');
-    emailInput.classList.add('invalid');
-  } else {
-    emailHint.textContent = 'Email виглядає правильно.';
-    emailHint.classList.add('success');
-    emailInput.classList.add('valid');
-  }
-});
+    if (error !== '') {
+      hint.textContent = error;
+      hint.classList.add('error');
+      input.classList.add('invalid');
+    } else {
+      hint.textContent = okText;
+      hint.classList.add('success');
+      input.classList.add('valid');
+    }
+  });
+}
+
+attachInlineValidation(emailInput, emailHint, getEmailError, 'Email виглядає правильно.');
+attachInlineValidation(phoneInput, phoneHint, getPhoneError, 'Телефон виглядає правильно.');
 
 
 /* =========================================================
@@ -237,12 +275,61 @@ emailInput.addEventListener('input', function () {
 
    Крок 4: ту саму логіку нижче написано через async/await з try/catch. */
 
-/* ----- Кроки 3-4: завантажуємо 3 пости і показуємо їх у розділі «Новини» ----- */
+/* ----- Крок 3-4: новини з файлу news.json через fetch + async/await ----- */
 const newsList = document.querySelector('#news-list');
 
 async function loadNews() {
-  newsList.textContent = 'Завантаження…';
+  newsList.textContent = 'Завантаження новин…';
 
+  try {
+    const response = await fetch('news.json');
+
+    if (!response.ok) {
+      throw new Error('Сервер відповів зі статусом ' + response.status);
+    }
+
+    const news = await response.json();
+    console.log('Отримано новини:', news);
+
+    newsList.textContent = '';
+    newsList.classList.add('timeline');
+
+    news.forEach(function (item) {
+      const card = document.createElement('div');
+      card.classList.add('news-item');
+
+      const meta = document.createElement('div');
+      meta.classList.add('news-meta');
+
+      const date = document.createElement('span');
+      date.classList.add('news-date');
+      date.textContent = item.date;
+
+      const tag = document.createElement('span');
+      tag.classList.add('news-tag');
+      tag.textContent = item.tag;
+
+      meta.append(date, tag);
+
+      const title = document.createElement('h3');
+      title.textContent = item.title;          // textContent — безпечно для даних із зовнішніх джерел
+
+      const text = document.createElement('p');
+      text.textContent = item.text;
+
+      card.append(meta, title, text);
+      newsList.append(card);
+    });
+  } catch (error) {
+    console.error('Не вдалося завантажити новини:', error);
+    newsList.textContent = 'Не вдалося завантажити новини. Відкрийте сторінку через Live Server або GitHub Pages і оновіть її.';
+  }
+}
+
+/* ----- Крок 3 з аркуша: GET /posts?_limit=3 — заголовки з тестового API ----- */
+const apiList = document.querySelector('#api-list');
+
+async function loadApiPosts() {
   try {
     const response = await fetch(API_URL + '/posts?_limit=3');
 
@@ -251,27 +338,20 @@ async function loadNews() {
     }
 
     const posts = await response.json();
-    console.log('Отримано пости:', posts);
-
-    newsList.textContent = '';
+    console.log('Отримано пости з API:', posts);
 
     posts.forEach(function (post) {
-      const item = document.createElement('div');
-      item.classList.add('news-item');
-
-      const title = document.createElement('h3');
-      title.textContent = post.title;          // textContent — безпечно для даних з API
-
-      const text = document.createElement('p');
-      text.textContent = post.body;
-
-      item.append(title, text);
-      newsList.append(item);
+      const li = document.createElement('li');
+      li.textContent = post.title;
+      apiList.append(li);
     });
   } catch (error) {
-    console.error('Не вдалося завантажити новини:', error);
-    newsList.textContent = 'Не вдалося завантажити новини. Перевірте інтернет і оновіть сторінку.';
+    console.error('Не вдалося завантажити пости з API:', error);
+    const li = document.createElement('li');
+    li.textContent = 'Не вдалося завантажити дані з API.';
+    apiList.append(li);
   }
 }
 
 loadNews();
+loadApiPosts();

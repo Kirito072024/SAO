@@ -1,0 +1,820 @@
+/* =========================================================
+   Sword Art Online: Айнкрад — фан-сайт
+   Практичне заняття 5: CSS custom properties, типографіка,
+   box-model, інтерактивні елементи.
+   Практичне 17: увесь цей файл у шарі @layer base,
+   тому utility-класи Tailwind мають вищий пріоритет.
+   Палітра взята з неба над Айнкрадом: ніч + захід сонця.
+   ========================================================= */
+
+@layer base {
+
+/* ===== 1. Custom properties (усі кольори тільки тут) ===== */
+:root {
+  --primary-color: #ff7eb3;   /* рожевий: посилання, кнопки, h2 */
+  --primary-dark: #ff5c9e;    /* стан :hover */
+  --accent-color: #ffb86b;    /* бурштин: h3, акценти */
+  --danger-color: #ff5c7a;    /* головне правило гри, помилки форми */
+  --success-color: #3ddc97;   /* успішне повідомлення форми */
+  --text-color: #ece8f5;      /* основний текст */
+  --muted-color: #a9a0c4;     /* другорядний текст, placeholder */
+  --bg-color: #120d22;        /* фон сторінки */
+  --bg-deep-color: #0a0714;   /* низ градієнта фону */
+  --surface-color: #1d1636;   /* картки-секції */
+  --card-color: #251c45;      /* вкладені картки */
+  --field-color: #130e26;     /* поля форми */
+  --border-color: #3a2e60;    /* рамки */
+  --on-primary: #1a1030;      /* текст на рожевій кнопці */
+
+  /* шапка (небо) */
+  --sky-1: #1a0f3a;
+  --sky-2: #4a2273;
+  --sky-3: #a8407a;
+  --sky-4: #e8845f;
+  --sun-glow: rgba(255, 184, 107, 0.65);
+  --star-color: #ffffff;
+  --hero-title-color: #ffffff;
+  --hero-text-color: #f6e9f5;
+  --hero-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  --nav-bg: rgba(18, 13, 34, 0.5);
+  --nav-text: #ffffff;
+  --nav-border: rgba(255, 255, 255, 0.28);
+  --img-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  --font-heading: "Exo 2", "Segoe UI", Arial, sans-serif;
+  --font-body: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.25s ease;
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark; /* темні скролбари та елементи форм */
+}
+
+/* ===== 1a. Світла (денна) тема: перевизначаємо тільки змінні ===== */
+:root[data-theme="light"] {
+  --primary-color: #d6336c;
+  --primary-dark: #b82459;
+  --accent-color: #a85d00;
+  --danger-color: #d12a4a;
+  --success-color: #18794e;
+  --text-color: #241b3f;
+  --muted-color: #5d5478;
+  --bg-color: #eef1fb;
+  --bg-deep-color: #dfe5f6;
+  --surface-color: #ffffff;
+  --card-color: #f4f1ff;
+  --field-color: #f7f5fd;
+  --border-color: #d8d0ee;
+  --on-primary: #ffffff;
+
+  --sky-1: #4f8fe0;
+  --sky-2: #8fc0f0;
+  --sky-3: #ffc4a0;
+  --sky-4: #ffe0b0;
+  --sun-glow: rgba(255, 236, 170, 0.9);
+  --star-color: transparent;
+  --hero-title-color: #14213d;
+  --hero-text-color: #1d2f55;
+  --hero-shadow: 0 2px 18px rgba(255, 255, 255, 0.55);
+  --nav-bg: rgba(255, 255, 255, 0.6);
+  --nav-text: #14213d;
+  --nav-border: rgba(20, 33, 61, 0.25);
+  --shadow: 0 12px 32px rgba(60, 40, 110, 0.12);
+  --img-shadow: 0 8px 24px rgba(60, 40, 110, 0.2);
+
+  color-scheme: light;
+}
+
+/* ===== 2. Базові стилі (body) ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  background-image: linear-gradient(180deg, var(--bg-color) 0%, var(--bg-deep-color) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+  background-color: var(--primary-color);
+  color: var(--on-primary);
+}
+
+/* ===== 3. Типографічна ієрархія ===== */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(2.3rem, 7vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-sm);
+  color: var(--hero-title-color);
+  text-shadow: var(--hero-shadow);
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: var(--space-md);
+}
+
+/* короткий акцент перед заголовком секції */
+h2::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 1.1em;
+  border-radius: 3px;
+  background-image: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: var(--space-sm);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  max-width: 70ch;
+}
+
+/* ===== 4. Посилання ===== */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+a:hover {
+  color: var(--accent-color);
+  border-bottom-color: currentColor;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* ===== 5. Шапка (hero) ===== */
+header {
+  position: relative;
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--sky-1);
+  background-image:
+    /* зорі (вдень непомітні) */
+    radial-gradient(1.5px 1.5px at 8% 18%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 42%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 35% 12%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 48% 30%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(2px 2px at 63% 16%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 74% 38%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 86% 10%, var(--star-color) 50%, transparent 51%),
+    radial-gradient(1px 1px at 93% 34%, var(--star-color) 50%, transparent 51%),
+    /* сяйво сонця знизу */
+    radial-gradient(ellipse 70% 60% at 50% 115%, var(--sun-glow), transparent 70%),
+    /* небо */
+    linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 48%, var(--sky-3) 80%, var(--sky-4) 100%);
+}
+
+header p {
+  margin-inline: auto;
+  margin-bottom: 0;
+  font-size: 1.2rem;
+  color: var(--hero-text-color);
+}
+
+/* ===== 6. Навігація (Flexbox) ===== */
+/* nav — flex-контейнер: лого зліва, посилання справа */
+nav {
+  display: flex;                       /* крок 2 */
+  justify-content: space-between;      /* крок 3: простір між лого і посиланнями */
+  align-items: center;                 /* крок 3: вирівнювання по вертикалі */
+  flex-wrap: wrap;
+  gap: var(--space-md);                /* крок 2: відступ між блоками */
+  max-width: 1080px;
+  margin: var(--space-lg) auto 0;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  border-radius: var(--radius);
+}
+
+nav .logo {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--hero-title-color);
+}
+
+/* ul — теж flex-контейнер: пункти меню в ряд */
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+}
+
+nav li a {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  color: var(--nav-text);
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition);
+}
+
+nav li a:hover {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* клас .active додається скриптом script.js до пункту меню, який вибрали */
+nav li a.active {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+}
+
+/* ===== 7. Секції як картки (box-model: padding + margin) ===== */
+main {
+  padding: var(--space-lg) var(--space-md);
+}
+
+section,
+aside {
+  max-width: 920px;
+  margin: 0 auto var(--space-lg);
+  padding: var(--space-lg);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  scroll-margin-top: var(--space-md);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ===== 8. Зображення ===== */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--img-shadow);
+}
+
+/* ===== 9. Блок «Айнкрад»: картинка + текст ===== */
+#aincrad img {
+  margin-bottom: var(--space-md);
+}
+
+@media (min-width: 820px) {
+  #aincrad {
+    display: grid;
+    grid-template-columns: minmax(0, 480px) 1fr;
+    column-gap: var(--space-lg);
+    align-items: start;
+  }
+
+  #aincrad h2 {
+    grid-column: 1 / -1;
+  }
+
+  #aincrad img {
+    margin-bottom: 0;
+  }
+}
+
+/* ===== 10. Вступ та історія ===== */
+#home p {
+  font-size: 1.15rem;
+}
+
+#story h2 + p {
+  font-size: 1.1rem;
+  padding-left: var(--space-md);
+  border-left: 3px solid var(--accent-color);
+}
+
+#story h3 {
+  margin-top: var(--space-lg);
+}
+
+#story ul {
+  list-style: disc;
+  margin: 0 0 var(--space-md);
+  padding-left: 1.4rem;
+}
+
+#story li {
+  margin-bottom: var(--space-sm);
+}
+
+#story li::marker {
+  color: var(--primary-color);
+}
+
+#story > p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 11. Механіка гри: плитки ===== */
+#mechanics ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+}
+
+#mechanics li {
+  flex: 1 1 340px;                     /* рівна ширина: по 2 у ряд */
+  padding: var(--space-md);
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+#mechanics li:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-color);
+}
+
+/* найважливіше правило гри виділено окремим кольором */
+#mechanics li:last-child {
+  border-left-color: var(--danger-color);
+}
+
+/* ===== 12. Картки персонажів і кланів ===== */
+/* Перенесено в Tailwind: див. utility-класи в index.html (Практичне 17) */
+
+/* ===== 13. Форма ===== */
+form {
+  display: grid;
+  gap: var(--space-md);
+  max-width: 560px;
+}
+
+form p {
+  margin: 0;
+  max-width: none;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+}
+
+/* <br> у розмітці зайвий, бо label і так над полем */
+form br {
+  display: none;
+}
+
+form label[for="agree"] {
+  display: inline;
+  font-weight: 400;
+  color: var(--muted-color);
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: var(--field-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+::placeholder {
+  color: var(--muted-color);
+  opacity: 1;
+}
+
+input:not([type="checkbox"]):hover,
+select:hover,
+textarea:hover {
+  border-color: var(--primary-color);
+}
+
+input:not([type="checkbox"]):focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 126, 179, 0.25);
+}
+
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  accent-color: var(--primary-color);
+}
+
+/* ===== 14. Кнопка форми ===== */
+/* Перенесено в Tailwind: див. utility-класи на кнопці в index.html (Практичне 17) */
+
+/* ===== 14c. Повідомлення форми та inline-підказки (Практичне 15) ===== */
+#form-message {
+  padding: var(--space-md);
+  background-color: var(--field-color);
+  border: 1px solid var(--border-color);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  white-space: pre-line;
+}
+
+#form-message:empty {
+  display: none;
+}
+
+#form-message.error {
+  border-color: var(--danger-color);
+}
+
+#form-message.success {
+  border-color: var(--success-color);
+}
+
+.field-hint {
+  display: block;
+  min-height: 1.2em;
+  margin-top: var(--space-xs);
+  font-size: 0.9rem;
+  color: var(--muted-color);
+}
+
+.field-hint.error {
+  color: var(--danger-color);
+}
+
+.field-hint.success {
+  color: var(--success-color);
+}
+
+form input.invalid:not([type="checkbox"]) {
+  border-color: var(--danger-color);
+}
+
+form input.valid:not([type="checkbox"]) {
+  border-color: var(--success-color);
+}
+
+/* ===== 14a. Кнопка зміни теми (день / ніч) ===== */
+button.theme-toggle {
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition), border-color var(--transition);
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  padding: 0.45rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--nav-text);
+  background-color: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  border-radius: 999px;
+}
+
+button.theme-toggle:hover {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+/* ===== 14b. Посилання «Дивитися» ===== */
+a.watch-link {
+  display: inline-block;
+  padding: 0.65rem 1.4rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition);
+}
+
+a.watch-link:hover {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+#home p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 14d. Новини (хроніка) та список з API (Практичне 18) ===== */
+#news code {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.95em;
+  background-color: var(--field-color);
+  border-radius: 6px;
+}
+
+#news > h3 {
+  margin-top: var(--space-xl);
+}
+
+#news-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  color: var(--muted-color);
+}
+
+/* вертикальна лінія часу з'являється, коли новини завантажено */
+#news-list.timeline {
+  position: relative;
+  padding-left: 2rem;
+  color: var(--text-color);
+}
+
+#news-list.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 7px;
+  width: 2px;
+  border-radius: 1px;
+  background-image: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+}
+
+.news-item {
+  position: relative;
+  padding: var(--space-md) var(--space-md) 0.4rem;
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+/* точка на лінії часу */
+.news-item::before {
+  content: "";
+  position: absolute;
+  top: 1.35rem;
+  left: calc(-2rem + 1px);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: 3px solid var(--surface-color);
+  box-sizing: content-box;
+  translate: -3px -3px;
+}
+
+.news-item:hover {
+  transform: translateX(4px);
+  border-color: var(--primary-color);
+}
+
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.news-date {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent-color);
+}
+
+.news-tag {
+  padding: 0.1rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-radius: 999px;
+}
+
+.news-item h3 {
+  margin: 0 0 var(--space-sm);
+}
+
+#api-list {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+#api-list li {
+  margin-bottom: var(--space-sm);
+  text-transform: capitalize;
+}
+
+#api-list li::marker {
+  color: var(--primary-color);
+}
+
+/* кнопка під час запиту (disabled) */
+button:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ===== 14e. Запасні стилі, якщо Tailwind (src/output.css) не підключився =====
+   Коли Tailwind працює, його utility-класи мають вищий пріоритет
+   (цей файл у шарі base), тож на вигляд ці правила не впливають. */
+form button[type="submit"] {
+  justify-self: start;
+  padding: 0.85rem 2rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+form button[type="submit"]:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+#characters,
+#clans {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+#characters > h2,
+#clans > h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+section article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
+  border-radius: var(--radius);
+}
+
+#clans article {
+  border-top-color: var(--accent-color);
+}
+
+article h3,
+article p {
+  margin: 0;
+}
+
+article img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (max-width: 600px) {
+  #characters,
+  #clans {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== 15. Цікавий факт ===== */
+aside {
+  border-left: 5px solid var(--accent-color);
+}
+
+aside p {
+  margin-bottom: 0;
+}
+
+/* ===== 16. Підвал ===== */
+footer {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  color: var(--muted-color);
+  font-size: 0.95rem;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+}
+
+footer p {
+  margin-inline: auto;
+}
+
+footer p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 17. Адаптивність та доступність ===== */
+@media (max-width: 600px) {
+  section,
+  aside {
+    padding: var(--space-md);
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  nav li a {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Додаткове завдання: на вузьких екранах навігація стає колонкою */
+@media (max-width: 700px) {
+  nav {
+    flex-direction: column;
+  }
+
+  nav ul {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    transition: none !important;
+  }
+}
+}

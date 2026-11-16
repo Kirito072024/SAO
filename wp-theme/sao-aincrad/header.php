@@ -15,6 +15,19 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<?php if ( is_front_page() ) : ?>
+	<!-- Інтро «LINK START»: кольорові кільця летять назустріч, як при вході в гру.
+	     Показується лише якщо скрипт у <head> додав клас .ls-play (раз за сесію), клік — пропустити -->
+	<div class="link-start" id="link-start" aria-hidden="true">
+		<div class="link-start__tunnel">
+			<?php for ( $i = 0; $i < 10; $i++ ) : ?>
+				<span style="--i: <?php echo (int) $i; ?>"></span>
+			<?php endfor; ?>
+		</div>
+		<p class="link-start__text">Link Start</p>
+	</div>
+<?php endif; ?>
+
 <a class="skip-link" href="#main"><?php esc_html_e( 'Перейти до основного вмісту', 'sao-aincrad' ); ?></a>
 
 <!-- «Смужка HP» у стилі SAO: показує, скільки сторінки прокручено (керує theme.js) -->

@@ -113,9 +113,9 @@ $contacts_url   = $contacts_page ? get_permalink( $contacts_page[0] ) : '';
 	<?php if ( get_the_content() ) : ?>
 		<section class="section" id="story">
 			<div class="container">
-				<article class="panel story entry-content" data-reveal>
+				<article class="panel story" data-reveal>
 					<h2 class="section-title"><?php esc_html_e( 'Чому гра стала смертельною', 'sao-aincrad' ); ?></h2>
-					<?php the_content(); ?>
+					<div class="entry-content"><?php the_content(); ?></div>
 				</article>
 			</div>
 		</section>

@@ -124,6 +124,15 @@ function sao_theme_boot_script() {
 		} catch (e) {}
 		document.documentElement.setAttribute('data-theme', t);
 		document.documentElement.classList.add('js'); // CSS знає, що JS працює (для анімацій появи)
+		<?php if ( is_front_page() ) : ?>
+		// Інтро «LINK START» — один раз за сесію і тільки якщо не ввімкнено «зменшити рух»
+		try {
+			if (!sessionStorage.getItem('sao-link-start') &&
+				!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				document.documentElement.classList.add('ls-play', 'ls-intro');
+			}
+		} catch (e) {}
+		<?php endif; ?>
 	})();
 	</script>
 	<meta name="theme-color" content="#1a0f3a">
@@ -164,6 +173,26 @@ function sao_meta_tags() {
 	}
 }
 add_action( 'wp_head', 'sao_meta_tags', 2 );
+
+/**
+ * Пункти меню з якорем (#aincrad) WordPress вважає «поточними» на головній разом із «Головна».
+ * Прибираємо цю позначку, щоб підсвічувався лише один пункт.
+ */
+function sao_menu_anchor_classes( $classes, $item ) {
+	if ( false !== strpos( (string) $item->url, '#' ) ) {
+		$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor' ) );
+	}
+	return $classes;
+}
+add_filter( 'nav_menu_css_class', 'sao_menu_anchor_classes', 10, 2 );
+
+function sao_menu_anchor_aria( $atts, $item ) {
+	if ( false !== strpos( (string) $item->url, '#' ) ) {
+		unset( $atts['aria-current'] );
+	}
+	return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'sao_menu_anchor_aria', 10, 2 );
 
 /**
  * Довжина та «…» для анонсів записів.

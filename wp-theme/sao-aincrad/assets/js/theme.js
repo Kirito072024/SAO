@@ -12,6 +12,31 @@
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- 0. Інтро «LINK START» ---------- */
+  var intro = document.getElementById('link-start');
+
+  if (intro && root.classList.contains('ls-play')) {
+    try { sessionStorage.setItem('sao-link-start', '1'); } catch (e) {}
+
+    var finishIntro = function () {
+      root.classList.remove('ls-play', 'ls-skip');
+      intro.remove();
+    };
+    var introTimer = setTimeout(finishIntro, 2600);
+
+    // клік або будь-яка клавіша — пропустити інтро
+    var skipIntro = function () {
+      clearTimeout(introTimer);
+      root.classList.add('ls-skip');
+      setTimeout(finishIntro, 320);
+      document.removeEventListener('keydown', skipIntro);
+    };
+    intro.addEventListener('click', skipIntro);
+    document.addEventListener('keydown', skipIntro);
+  } else if (intro) {
+    intro.remove();
+  }
+
   /* ---------- 1. Тема день / ніч ---------- */
   var toggle = document.getElementById('theme-toggle');
 

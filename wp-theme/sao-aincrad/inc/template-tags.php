@@ -185,22 +185,31 @@ function sao_sky( $with_castle = true ) {
 		<div class="sky__cloud sky__cloud--3"></div>
 
 		<?php if ( $with_castle ) : ?>
-			<!-- Стилізований силует Айнкрада: «поверхи», що звужуються догори, і шпилі знизу -->
-			<svg class="sky__castle" viewBox="0 0 240 200">
+			<!-- Стилізований Айнкрад: 8 «поверхів»-дисків, що звужуються догори (кожен — трапеція з еліптичним краєм),
+			     шпиль угорі і кам'яні «бурульки», що звисають з основи. Малюється циклом PHP. -->
+			<svg class="sky__castle" viewBox="0 -14 240 250">
+				<ellipse class="sky__castle-halo" cx="120" cy="176" rx="118" ry="16"/>
 				<g class="sky__castle-body">
-					<path d="M112 18h16l4 14h-24z"/>
-					<path d="M104 34h32l5 16h-42z"/>
-					<path d="M95 52h50l6 18H89z"/>
-					<path d="M84 72h72l7 20H77z"/>
-					<path d="M71 94h98l8 22H63z"/>
-					<path d="M56 118h128l9 24H47z"/>
-					<path d="M40 144h160l8 18H32z"/>
-					<path d="M60 162l8 26 6-26M98 162l6 32 6-32M132 162l6 30 6-30M168 162l6 24 6-24"/>
+					<?php
+					// бурульки знизу: [x, довжина]
+					foreach ( array( array( 34, 16 ), array( 52, 30 ), array( 70, 22 ), array( 88, 44 ), array( 106, 34 ), array( 122, 56 ), array( 138, 38 ), array( 156, 48 ), array( 172, 26 ), array( 190, 32 ), array( 206, 18 ) ) as $drip ) {
+						printf( '<path class="drip" d="M%1$d 176 L%2$d %3$d L%4$d 176Z"/>', $drip[0] - 6, $drip[0], 176 + $drip[1], $drip[0] + 6 );
+					}
+					for ( $i = 0; $i < 8; $i++ ) {
+						$w = 216 - $i * 24;      // ширина поверху
+						$y = 176 - $i * 20;      // нижній край поверху
+						$x = 120 - $w / 2;
+						printf( '<path d="M%1$s %2$d L%3$s %4$d L%5$s %4$d L%6$s %2$d Z"/>', $x, $y, $x + 7, $y - 17, $x + $w - 7, $x + $w );
+						printf( '<ellipse class="rim" cx="120" cy="%1$d" rx="%2$s" ry="%3$s"/>', $y, $w / 2, 4 + ( 7 - $i ) * 0.5 );
+					}
+					?>
+					<path d="M113 19 L120 -12 L127 19Z"/>
 				</g>
 				<g class="sky__castle-lights">
-					<circle cx="120" cy="44" r="1.4"/><circle cx="108" cy="62" r="1.4"/><circle cx="134" cy="82" r="1.4"/>
-					<circle cx="96" cy="104" r="1.4"/><circle cx="150" cy="128" r="1.4"/><circle cx="80" cy="132" r="1.4"/>
-					<circle cx="122" cy="152" r="1.4"/><circle cx="60" cy="154" r="1.4"/><circle cx="178" cy="154" r="1.4"/>
+					<circle cx="120" cy="28" r="1.5"/><circle cx="104" cy="50" r="1.5"/><circle cx="140" cy="68" r="1.5"/>
+					<circle cx="90" cy="90" r="1.5"/><circle cx="128" cy="108" r="1.5"/><circle cx="72" cy="128" r="1.5"/>
+					<circle cx="168" cy="130" r="1.5"/><circle cx="110" cy="150" r="1.5"/><circle cx="46" cy="168" r="1.5"/>
+					<circle cx="188" cy="166" r="1.5"/><circle cx="150" cy="170" r="1.5"/>
 				</g>
 			</svg>
 		<?php endif; ?>

@@ -247,8 +247,11 @@ function sao_install_demo_content() {
 	}
 
 	// «Гарні» посилання /news/... замість ?p=123 (якщо ще не налаштовано)
+	// set_permalink_structure() оновлює і опцію, і об'єкт $wp_rewrite — інакше flush_rewrite_rules()
+	// нижче згенерує правила ще для старої («простої») структури і сторінки віддаватимуть 404
 	if ( ! get_option( 'permalink_structure' ) ) {
-		update_option( 'permalink_structure', '/%postname%/' );
+		global $wp_rewrite;
+		$wp_rewrite->set_permalink_structure( '/%postname%/' );
 	}
 
 	// Стандартний запис «Привіт, світ!» і «Приклад сторінки» — у кошик (можна відновити)

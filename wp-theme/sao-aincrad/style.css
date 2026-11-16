@@ -1,0 +1,21 @@
+/*
+Theme Name:   SAO Aincrad
+Theme URI:    https://github.com/Kirito072024/SAO
+Author:       Kirito072024
+Author URI:   https://github.com/Kirito072024
+Description:  Власна тема WordPress для сайту «Sword Art Online: Айнкрад». Анімований перемикач день/ніч у стилі інтерфейсу SAO (сонце й місяць), власні типи записів «Персонажі» та «Гільдії», новини-блог, форма зворотного зв'язку з заявками в адмінці, налаштування в Customizer і автоматичне створення демо-вмісту при активації.
+Version:      1.0.0
+Requires at least: 6.0
+Tested up to: 6.8
+Requires PHP: 7.4
+License:      GNU General Public License v2 or later
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  sao-aincrad
+Tags:         dark, light, one-column, custom-menu, custom-logo, featured-images, theme-options, translation-ready
+*/
+
+/*
+ * Цей файл потрібен WordPress, щоб розпізнати тему (заголовок вище).
+ * Самі стилі лежать в assets/css/main.css і підключаються у functions.php
+ * через wp_enqueue_style().
+ */

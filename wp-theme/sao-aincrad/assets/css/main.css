@@ -111,7 +111,7 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; background: var(--bg-color); }
 
 body {
   margin: 0;
@@ -119,7 +119,7 @@ body {
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--text-color);
-  background: var(--bg-color) linear-gradient(180deg, var(--bg-color), var(--bg-deep-color)) fixed;
+  background: var(--bg-color);
   -webkit-font-smoothing: antialiased;
   transition: var(--theme-fade);
 }

@@ -57,13 +57,14 @@ $sao_sent = isset( $_GET['sent'] ) ? sanitize_key( $_GET['sent'] ) : ''; // phpc
 
 	<button type="submit" class="btn btn--primary"><?php esc_html_e( 'Надіслати', 'sao-aincrad' ); ?></button>
 
-	<div id="form-message" class="form-message<?php echo $sao_sent ? ( 'ok' === $sao_sent ? ' success' : ' error' ) : ''; ?>" role="status">
-		<?php
-		if ( 'ok' === $sao_sent ) {
-			esc_html_e( 'Дякуємо! Повідомлення надіслано.', 'sao-aincrad' );
-		} elseif ( 'error' === $sao_sent ) {
-			esc_html_e( 'Не вдалося надіслати. Перевірте поля й спробуйте ще раз.', 'sao-aincrad' );
-		}
-		?>
-	</div>
+	<?php
+	$sao_msg = '';
+	if ( 'ok' === $sao_sent ) {
+		$sao_msg = __( 'Дякуємо! Повідомлення надіслано.', 'sao-aincrad' );
+	} elseif ( 'error' === $sao_sent ) {
+		$sao_msg = __( 'Не вдалося надіслати. Перевірте поля й спробуйте ще раз.', 'sao-aincrad' );
+	}
+	// усе в один рядок без пробілів — інакше CSS-селектор :empty не сховає порожній блок
+	?>
+	<div id="form-message" class="form-message<?php echo $sao_sent ? ( 'ok' === $sao_sent ? ' success' : ' error' ) : ''; ?>" role="status"><?php echo esc_html( $sao_msg ); ?></div>
 </form>

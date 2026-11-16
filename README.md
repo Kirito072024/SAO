@@ -8,7 +8,7 @@
 
 ![Головна сторінка](sao-aincrad/screenshot.png)
 
-- **Живий сайт:** _додати після деплою_
+- **Живий сайт:** [sao-aincrad.freepage.cc](https://sao-aincrad.freepage.cc) (хостинг InfinityFree)
 - **Тема:** папка [`sao-aincrad/`](sao-aincrad/)
 
 ## Можливості

@@ -11,7 +11,7 @@
 	<div class="container site-footer__inner">
 		<div class="site-footer__brand">
 			<p class="site-footer__title"><?php bloginfo( 'name' ); ?></p>
-			<p class="site-footer__text"><?php echo esc_html( sao_opt( 'sao_footer_text' ) ); ?></p>
+			<p class="site-footer__text"<?php sao_live( 'sao_footer_text' ); ?>><?php echo esc_html( sao_opt( 'sao_footer_text' ) ); ?></p>
 		</div>
 
 		<?php if ( has_nav_menu( 'footer' ) ) : ?>

@@ -28,13 +28,13 @@ $contacts_url   = $contacts_page ? get_permalink( $contacts_page[0] ) : '';
 <section class="hero">
 	<?php sao_sky(); ?>
 	<div class="hero__inner container">
-		<p class="kicker kicker--glow"><?php echo esc_html( sao_opt( 'sao_hero_kicker' ) ); ?></p>
-		<h1 class="hero__title"><?php echo esc_html( sao_opt( 'sao_hero_title' ) ); ?></h1>
-		<p class="hero__subtitle"><?php echo esc_html( sao_opt( 'sao_hero_subtitle' ) ); ?></p>
+		<p class="kicker kicker--glow"<?php sao_live( 'sao_hero_kicker' ); ?>><?php echo esc_html( sao_opt( 'sao_hero_kicker' ) ); ?></p>
+		<h1 class="hero__title"<?php sao_live( 'sao_hero_title' ); ?>><?php echo esc_html( sao_opt( 'sao_hero_title' ) ); ?></h1>
+		<p class="hero__subtitle"<?php sao_live( 'sao_hero_subtitle' ); ?>><?php echo esc_html( sao_opt( 'sao_hero_subtitle' ) ); ?></p>
 		<div class="hero__actions">
-			<a class="btn btn--primary" href="#aincrad"><?php esc_html_e( 'Увійти в Айнкрад', 'sao-aincrad' ); ?> <?php echo sao_icon( 'arrow' ); // phpcs:ignore ?></a>
+			<a class="btn btn--primary" href="#aincrad"><span<?php sao_live( 'sao_hero_btn' ); ?>><?php echo esc_html( sao_opt( 'sao_hero_btn' ) ); ?></span> <?php echo sao_icon( 'arrow' ); // phpcs:ignore ?></a>
 			<?php if ( sao_opt( 'sao_watch_url' ) ) : ?>
-				<a class="btn btn--ghost" href="<?php echo esc_url( sao_opt( 'sao_watch_url' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo sao_icon( 'play' ); // phpcs:ignore ?> <?php esc_html_e( 'Дивитися 1 сезон', 'sao-aincrad' ); ?></a>
+				<a class="btn btn--ghost" href="<?php echo esc_url( sao_opt( 'sao_watch_url' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo sao_icon( 'play' ); // phpcs:ignore ?> <span<?php sao_live( 'sao_watch_text' ); ?>><?php echo esc_html( sao_opt( 'sao_watch_text' ) ); ?></span></a>
 			<?php endif; ?>
 		</div>
 	</div>
@@ -45,15 +45,17 @@ $contacts_url   = $contacts_page ? get_permalink( $contacts_page[0] ) : '';
 <section class="section" id="welcome">
 	<div class="container">
 		<div class="panel welcome" data-reveal>
-			<h2 class="section-title"><?php esc_html_e( 'Ласкаво просимо', 'sao-aincrad' ); ?></h2>
-			<p class="lead"><?php echo esc_html( sao_opt( 'sao_intro' ) ); ?></p>
+			<h2 class="section-title"<?php sao_live( 'sao_welcome_title' ); ?>><?php echo esc_html( sao_opt( 'sao_welcome_title' ) ); ?></h2>
+			<p class="lead"<?php sao_live( 'sao_intro' ); ?>><?php echo esc_html( sao_opt( 'sao_intro' ) ); ?></p>
 		</div>
 
 		<ul class="stats" data-reveal>
-			<li class="stat"><span class="stat__num" data-count="100">100</span><span class="stat__label"><?php esc_html_e( 'поверхів замку', 'sao-aincrad' ); ?></span></li>
-			<li class="stat"><span class="stat__num" data-count="10000">10 000</span><span class="stat__label"><?php esc_html_e( 'гравців у пастці', 'sao-aincrad' ); ?></span></li>
-			<li class="stat"><span class="stat__num" data-count="2">2</span><span class="stat__label"><?php esc_html_e( 'роки в грі', 'sao-aincrad' ); ?></span></li>
-			<li class="stat"><span class="stat__num" data-count="6147">6 147</span><span class="stat__label"><?php esc_html_e( 'повернулися додому', 'sao-aincrad' ); ?></span></li>
+			<?php for ( $n = 1; $n <= 4; $n++ ) : ?>
+				<li class="stat">
+					<span class="stat__num" data-count="<?php echo (int) sao_opt( "sao_stat{$n}_num" ); ?>"<?php sao_live( "sao_stat{$n}_num" ); ?>><?php echo esc_html( sao_number( sao_opt( "sao_stat{$n}_num" ) ) ); ?></span>
+					<span class="stat__label"<?php sao_live( "sao_stat{$n}_label" ); ?>><?php echo esc_html( sao_opt( "sao_stat{$n}_label" ) ); ?></span>
+				</li>
+			<?php endfor; ?>
 		</ul>
 	</div>
 </section>
@@ -69,13 +71,14 @@ $contacts_url   = $contacts_page ? get_permalink( $contacts_page[0] ) : '';
 					alt="<?php esc_attr_e( 'Айнкрад — летючий залізний замок у небі', 'sao-aincrad' ); ?>" loading="lazy" decoding="async">
 			</figure>
 			<div class="split__text">
-				<h2 class="section-title"><?php esc_html_e( 'Айнкрад', 'sao-aincrad' ); ?></h2>
-				<p><?php esc_html_e( 'Айнкрад — величезний залізний замок, що висить у небі. Він складається зі 100 поверхів. На кожному є місто, лабіринт і бос, якого потрібно перемогти, щоб відкрити шлях вище.', 'sao-aincrad' ); ?></p>
+				<h2 class="section-title"<?php sao_live( 'sao_aincrad_title' ); ?>><?php echo esc_html( sao_opt( 'sao_aincrad_title' ) ); ?></h2>
+				<p<?php sao_live( 'sao_aincrad_text' ); ?>><?php echo esc_html( sao_opt( 'sao_aincrad_text' ) ); ?></p>
 				<ul class="floors">
-					<li><b>1</b> <?php esc_html_e( 'Місто Початку — тут почалася «смертельна гра»', 'sao-aincrad' ); ?></li>
-					<li><b>22</b> <?php esc_html_e( 'Тихий лісовий поверх, будиночок Кіріто й Асуни', 'sao-aincrad' ); ?></li>
-					<li><b>74</b> <?php esc_html_e( 'Бос «Блискучі очі» і подвійні мечі', 'sao-aincrad' ); ?></li>
-					<li><b>75</b> <?php esc_html_e( 'Колінія і фінальна дуель із Хізкліфом', 'sao-aincrad' ); ?></li>
+					<?php for ( $n = 1; $n <= 4; $n++ ) : ?>
+						<?php if ( sao_opt( "sao_floor{$n}_text" ) ) : ?>
+							<li><b<?php sao_live( "sao_floor{$n}_num" ); ?>><?php echo esc_html( sao_opt( "sao_floor{$n}_num" ) ); ?></b> <span<?php sao_live( "sao_floor{$n}_text" ); ?>><?php echo esc_html( sao_opt( "sao_floor{$n}_text" ) ); ?></span></li>
+						<?php endif; ?>
+					<?php endfor; ?>
 				</ul>
 			</div>
 		</div>
@@ -85,23 +88,17 @@ $contacts_url   = $contacts_page ? get_permalink( $contacts_page[0] ) : '';
 <!-- ============ МЕХАНІКА ============ -->
 <section class="section" id="mechanics">
 	<div class="container">
-		<h2 class="section-title" data-reveal><?php esc_html_e( 'Механіка гри', 'sao-aincrad' ); ?></h2>
+		<h2 class="section-title" data-reveal<?php sao_live( 'sao_mech_title' ); ?>><?php echo esc_html( sao_opt( 'sao_mech_title' ) ); ?></h2>
 		<ul class="tiles">
 			<?php
-			$tiles = array(
-				array( 'helmet', 'NerveGear', 'Шолом повністю занурює гравця у віртуальний світ — усі п\'ять відчуттів.' ),
-				array( 'sword', 'Sword Skills', 'Магії немає: бої ведуться мечами та навичками меча. Унікальна навичка Кіріто — Dual Blades.' ),
-				array( 'shield', 'Рівні та гільдії', 'Є рівні, смужка HP, інвентар, крафт і гільдії. Сильніше разом.' ),
-				array( 'heart', 'Безпечні зони', 'У містах гравцям не можна завдати шкоди — тут відпочивають перед лабіринтом.' ),
-				array( 'shield', 'Колір курсора', 'Зелений — звичайний гравець, жовтогарячий — злочинець, червоний — убивця.' ),
-				array( 'skull', 'Головне правило', 'Смерть у грі означає смерть у реальності. Другого життя немає.' ),
-			);
-			foreach ( $tiles as $i => $tile ) :
+			$sao_icons = array( 'helmet', 'sword', 'shield', 'heart', 'shield', 'skull' ); // іконки плиток по порядку
+			foreach ( $sao_icons as $i => $sao_icon ) :
+				$n = $i + 1;
 				?>
-				<li class="tile<?php echo 'skull' === $tile[0] ? ' tile--danger' : ''; ?>" data-reveal style="--delay: <?php echo (int) $i * 60; ?>ms">
-					<span class="tile__icon"><?php echo sao_icon( $tile[0] ); // phpcs:ignore ?></span>
-					<h3 class="tile__title"><?php echo esc_html( $tile[1] ); ?></h3>
-					<p><?php echo esc_html( $tile[2] ); ?></p>
+				<li class="tile<?php echo 'skull' === $sao_icon ? ' tile--danger' : ''; ?>" data-reveal style="--delay: <?php echo (int) $i * 60; ?>ms">
+					<span class="tile__icon"><?php echo sao_icon( $sao_icon ); // phpcs:ignore ?></span>
+					<h3 class="tile__title"<?php sao_live( "sao_tile{$n}_title" ); ?>><?php echo esc_html( sao_opt( "sao_tile{$n}_title" ) ); ?></h3>
+					<p<?php sao_live( "sao_tile{$n}_text" ); ?>><?php echo esc_html( sao_opt( "sao_tile{$n}_text" ) ); ?></p>
 				</li>
 			<?php endforeach; ?>
 		</ul>
@@ -114,7 +111,7 @@ $contacts_url   = $contacts_page ? get_permalink( $contacts_page[0] ) : '';
 		<section class="section" id="story">
 			<div class="container">
 				<article class="panel story" data-reveal>
-					<h2 class="section-title"><?php esc_html_e( 'Чому гра стала смертельною', 'sao-aincrad' ); ?></h2>
+					<h2 class="section-title"<?php sao_live( 'sao_story_title' ); ?>><?php echo esc_html( sao_opt( 'sao_story_title' ) ); ?></h2>
 					<div class="entry-content"><?php the_content(); ?></div>
 				</article>
 			</div>
@@ -136,7 +133,7 @@ if ( $characters->have_posts() ) :
 	<section class="section" id="characters">
 		<div class="container">
 			<div class="section-head" data-reveal>
-				<h2 class="section-title"><?php esc_html_e( 'Персонажі', 'sao-aincrad' ); ?></h2>
+				<h2 class="section-title"<?php sao_live( 'sao_characters_title' ); ?>><?php echo esc_html( sao_opt( 'sao_characters_title' ) ); ?></h2>
 				<a class="link-more" href="<?php echo esc_url( $characters_url ); ?>"><?php esc_html_e( 'Усі персонажі', 'sao-aincrad' ); ?> <?php echo sao_icon( 'arrow' ); // phpcs:ignore ?></a>
 			</div>
 			<div class="grid grid--4">
@@ -166,7 +163,7 @@ if ( $guilds->have_posts() ) :
 	<section class="section" id="clans">
 		<div class="container">
 			<div class="section-head" data-reveal>
-				<h2 class="section-title"><?php esc_html_e( 'Клани та гільдії', 'sao-aincrad' ); ?></h2>
+				<h2 class="section-title"<?php sao_live( 'sao_guilds_title' ); ?>><?php echo esc_html( sao_opt( 'sao_guilds_title' ) ); ?></h2>
 				<a class="link-more" href="<?php echo esc_url( $guilds_url ); ?>"><?php esc_html_e( 'Усі гільдії', 'sao-aincrad' ); ?> <?php echo sao_icon( 'arrow' ); // phpcs:ignore ?></a>
 			</div>
 			<div class="grid grid--2">
@@ -196,7 +193,7 @@ if ( $latest->have_posts() ) :
 	<section class="section" id="news">
 		<div class="container">
 			<div class="section-head" data-reveal>
-				<h2 class="section-title"><?php esc_html_e( 'Новини Айнкраду', 'sao-aincrad' ); ?></h2>
+				<h2 class="section-title"<?php sao_live( 'sao_news_title' ); ?>><?php echo esc_html( sao_opt( 'sao_news_title' ) ); ?></h2>
 				<a class="link-more" href="<?php echo esc_url( $news_url ); ?>"><?php esc_html_e( 'Уся хроніка', 'sao-aincrad' ); ?> <?php echo sao_icon( 'arrow' ); // phpcs:ignore ?></a>
 			</div>
 			<div class="timeline">
@@ -217,11 +214,11 @@ if ( $latest->have_posts() ) :
 	<div class="container">
 		<div class="cta" data-reveal>
 			<div>
-				<h2 class="cta__title"><?php esc_html_e( 'Є питання або ідея?', 'sao-aincrad' ); ?></h2>
-				<p><?php esc_html_e( 'Напиши нам — заявка потрапить прямо в адмінку сайту.', 'sao-aincrad' ); ?></p>
+				<h2 class="cta__title"<?php sao_live( 'sao_cta_title' ); ?>><?php echo esc_html( sao_opt( 'sao_cta_title' ) ); ?></h2>
+				<p<?php sao_live( 'sao_cta_text' ); ?>><?php echo esc_html( sao_opt( 'sao_cta_text' ) ); ?></p>
 			</div>
 			<?php if ( $contacts_url ) : ?>
-				<a class="btn btn--primary" href="<?php echo esc_url( $contacts_url ); ?>"><?php esc_html_e( 'Написати', 'sao-aincrad' ); ?> <?php echo sao_icon( 'arrow' ); // phpcs:ignore ?></a>
+				<a class="btn btn--primary" href="<?php echo esc_url( $contacts_url ); ?>"><span<?php sao_live( 'sao_cta_btn' ); ?>><?php echo esc_html( sao_opt( 'sao_cta_btn' ) ); ?></span> <?php echo sao_icon( 'arrow' ); // phpcs:ignore ?></a>
 			<?php endif; ?>
 		</div>
 

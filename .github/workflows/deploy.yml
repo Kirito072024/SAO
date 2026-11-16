@@ -1,0 +1,52 @@
+# Автодеплой теми на хостинг InfinityFree по FTP.
+# Після кожного push у main, де змінилася папка sao-aincrad/, GitHub сам завантажує
+# змінені файли в wp-content/themes/sao-aincrad/ на хостингу. ZIP вручну більше не потрібен.
+#
+# Одноразове налаштування: GitHub → Settings → Secrets and variables → Actions → New repository secret
+#   FTP_SERVER    — напр. ftpupload.net        (InfinityFree → Account → FTP Details)
+#   FTP_USERNAME  — напр. if0_12345678
+#   FTP_PASSWORD  — пароль акаунта хостингу (vPanel)
+name: Deploy theme
+
+on:
+  push:
+    branches: [main]
+    paths: ['sao-aincrad/**', '.github/workflows/deploy.yml']
+  workflow_dispatch: # кнопка «Run workflow» для ручного запуску
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Перевірити, чи задані секрети FTP
+        id: check
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -z "$FTP_SERVER" ]; then
+            echo "::warning::Секрети FTP ще не задані — деплой пропущено (див. коментар у deploy.yml)"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.ready == 'true'
+
+      - name: Перевірити синтаксис PHP
+        if: steps.check.outputs.ready == 'true'
+        run: find sao-aincrad -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Завантажити тему по FTP
+        if: steps.check.outputs.ready == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./sao-aincrad/
+          server-dir: /htdocs/wp-content/themes/sao-aincrad/

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // захист від прямого відкриття файлу в браузері
 }
 
-define( 'SAO_VERSION', '1.0.0' );
+define( 'SAO_VERSION', '1.1.0' );
 define( 'SAO_DIR', get_template_directory() );
 define( 'SAO_URI', get_template_directory_uri() );
 
@@ -113,6 +113,13 @@ add_filter( 'wp_resource_hints', 'sao_resource_hints', 10, 2 );
  * Скрипт у <head>: ставимо тему ДО відмальовки сторінки,
  * щоб не було «блимання» світлої/темної теми.
  */
+/**
+ * Чи показувати інтро LINK START: лише на головній, якщо ввімкнено в Customizer і це не превʼю Customizer.
+ */
+function sao_intro_active() {
+	return is_front_page() && sao_opt( 'sao_intro_enabled' ) && ! is_customize_preview();
+}
+
 function sao_theme_boot_script() {
 	?>
 	<script>
@@ -124,7 +131,7 @@ function sao_theme_boot_script() {
 		} catch (e) {}
 		document.documentElement.setAttribute('data-theme', t);
 		document.documentElement.classList.add('js'); // CSS знає, що JS працює (для анімацій появи)
-		<?php if ( is_front_page() ) : ?>
+		<?php if ( sao_intro_active() ) : ?>
 		// Інтро «LINK START» — один раз за сесію і тільки якщо не ввімкнено «зменшити рух»
 		try {
 			if (!sessionStorage.getItem('sao-link-start') &&

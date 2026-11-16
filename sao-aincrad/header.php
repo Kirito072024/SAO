@@ -15,7 +15,7 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<?php if ( is_front_page() ) : ?>
+<?php if ( sao_intro_active() ) : ?>
 	<!-- Інтро «LINK START»: кольорові кільця летять назустріч, як при вході в гру.
 	     Показується лише якщо скрипт у <head> додав клас .ls-play (раз за сесію), клік — пропустити -->
 	<div class="link-start" id="link-start" aria-hidden="true">
@@ -24,7 +24,7 @@
 				<span style="--i: <?php echo (int) $i; ?>"></span>
 			<?php endfor; ?>
 		</div>
-		<p class="link-start__text">Link Start</p>
+		<p class="link-start__text"><?php echo esc_html( sao_opt( 'sao_intro_text' ) ); ?></p>
 	</div>
 <?php endif; ?>
 

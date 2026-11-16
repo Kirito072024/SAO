@@ -1491,3 +1491,15 @@ input.valid { border-color: var(--success-color) !important; }
 @keyframes ls-out {
   to { opacity: 0; visibility: hidden; }
 }
+
+/* ==========================================================================
+   15. Превʼю Customizer: змінений текст коротко підсвічується
+   ========================================================================== */
+.sao-flash {
+  animation: sao-flash 0.9s ease-out;
+}
+
+@keyframes sao-flash {
+  from { background-color: color-mix(in srgb, var(--sao-orange) 45%, transparent); }
+  to   { background-color: transparent; }
+}

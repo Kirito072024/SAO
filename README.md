@@ -21,7 +21,8 @@
 | ✨ **Анімації** | поява блоків при прокрутці, лічильники цифр, SAO-рамка «прицілу» та смужка HP на картках, смужка HP прокрутки зверху |
 | 👥 **Власні типи записів** | «Персонажі», «Гільдії», «Заявки» + додаткові поля (роль, лідер, тип гільдії, дата у світі SAO) |
 | 📨 **Форма зв'язку** | перевірка полів у браузері й на сервері, відправка через REST API без перезавантаження, захист від спаму, заявки зберігаються в адмінці й надсилаються листом |
-| 🎛 **Customizer** | тексти головного екрана, посилання, email, підвал — «Вигляд → Налаштувати → Тема SAO Aincrad» |
+| 🎛 **Customizer** | **усі** тексти головної (hero, цифри, «Айнкрад», механіка, заголовки секцій, заклик), інтро, контакти й підвал — «Вигляд → Налаштувати → Тема SAO Aincrad»; превʼю оновлюється миттєво під час набору |
+| 🔄 **Автодеплой** | після кожного `git push` GitHub Actions перевіряє PHP і сам завантажує тему на хостинг по FTP |
 | 📱 **Адаптивність** | телефон / планшет / ПК, мобільне меню; доступність: skip link, aria-атрибути, `prefers-reduced-motion` |
 | 🚀 **Демо-вміст** | при активації теми автоматично створюються сторінки, персонажі, гільдії, 9 новин і меню |
 
@@ -49,7 +50,8 @@ SAO/
 │   │   ├── contact-form.php   REST API /wp-json/sao/v1/contact
 │   │   ├── template-tags.php  допоміжні функції, SVG сонця/місяця/неба/Айнкрада
 │   │   └── demo-content.php   демо-вміст при активації
-│   └── assets/  css/main.css · js/theme.js · js/contact.js · images/ · icons/
+│   └── assets/  css/main.css · js/theme.js · js/contact.js · js/customize-preview.js · images/ · icons/
+├── .github/workflows/deploy.yml  автодеплой на хостинг
 ├── blueprint.json          налаштування для локального запуску (WordPress Playground)
 └── practicals/             попередні практичні роботи (статичний сайт, React, Node API)
 ```
@@ -88,10 +90,18 @@ npx @wp-playground/cli@latest server --mount=./sao-aincrad:/wordpress/wp-content
    Сторінки, персонажі, гільдії, новини й меню створяться автоматично.
 4. За бажанням: **Налаштування → Постійні посилання → Зберегти** (оновлює адреси `/characters/`, `/guilds/`).
 
+## Автодеплой (GitHub Actions)
+
+Файл [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml): після push у `main`, де змінилася папка `sao-aincrad/`,
+GitHub перевіряє синтаксис усіх PHP-файлів і завантажує лише змінені файли в `htdocs/wp-content/themes/sao-aincrad/` на хостингу.
+
+Одноразово: **Settings → Secrets and variables → Actions → New repository secret** — `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`
+(дані з InfinityFree → акаунт → **FTP Details**). Поки секретів немає, деплой просто пропускається.
+
 ## Технології
 
-WordPress 6+, PHP 7.4+, HTML5, CSS3 (custom properties, grid, flexbox, `color-mix`, анімації), JavaScript (ES5+, View Transitions API,
-IntersectionObserver, Fetch API), REST API WordPress, Google Fonts (Exo 2, Inter), Git.
+WordPress 6+, PHP 7.4+, HTML5, CSS3 (custom properties, grid, flexbox, `color-mix`, анімації), JavaScript (ES5+, View Transitions API, Customizer API (postMessage),
+IntersectionObserver, Fetch API), REST API WordPress, Google Fonts (Exo 2, Inter), Git, GitHub Actions (CI/CD по FTP).
 
 ## Автор
 

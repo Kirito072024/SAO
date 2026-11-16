@@ -239,10 +239,11 @@ function sao_install_demo_content() {
 	}
 
 	// Назва та опис сайту, якщо залишились стандартні
-	if ( in_array( get_option( 'blogname' ), array( '', 'My WordPress Website', 'My WordPress', 'Мій сайт WordPress' ), true ) ) {
+	if ( in_array( get_option( 'blogname' ), array( '', 'My WordPress Website', 'My WordPress', 'My Blog', 'Мій сайт WordPress' ), true ) ) {
 		update_option( 'blogname', 'SAO — Айнкрад' );
 	}
-	if ( '' === get_option( 'blogdescription' ) || 'Just another WordPress site' === get_option( 'blogdescription' ) ) {
+	// стандартні описи WordPress і Softaculous (інсталятор на хостингу ставить «My WordPress Blog»)
+	if ( in_array( get_option( 'blogdescription' ), array( '', 'Just another WordPress site', 'My WordPress Blog', 'Ще один сайт на WordPress' ), true ) ) {
 		update_option( 'blogdescription', 'Фан-сайт про Sword Art Online: світ Айнкрада, механіка гри, історія, персонажі та гільдії.' );
 	}
 

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/",
+  "preferredVersions": { "php": "8.2", "wp": "latest" },
+  "login": true,
+  "steps": [
+    { "step": "setSiteOptions", "options": { "blogname": "SAO — Айнкрад" } },
+    { "step": "setSiteLanguage", "language": "uk" },
+    { "step": "activateTheme", "themeFolderName": "sao-aincrad" }
+  ]
+}

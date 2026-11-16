@@ -29,7 +29,7 @@
 				<svg class="brand__emblem" viewBox="0 0 40 40" aria-hidden="true">
 					<circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
 					<path d="M13 30L27 9M27 30L13 9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-					<path d="M10 26h6M24 26h6" stroke="var(--accent-color)" stroke-width="2.4" stroke-linecap="round"/>
+					<path d="M10 26h6M24 26h6" style="stroke: var(--accent-color)" stroke-width="2.4" stroke-linecap="round"/>
 				</svg>
 			<?php endif; ?>
 			<span class="brand__name"><?php bloginfo( 'name' ); ?></span>

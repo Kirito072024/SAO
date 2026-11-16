@@ -123,6 +123,7 @@ function sao_theme_boot_script() {
 				(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
 		} catch (e) {}
 		document.documentElement.setAttribute('data-theme', t);
+		document.documentElement.classList.add('js'); // CSS знає, що JS працює (для анімацій появи)
 	})();
 	</script>
 	<meta name="theme-color" content="#1a0f3a">

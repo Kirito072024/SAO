@@ -1,0 +1,11 @@
+/* Стилі для редактора блоків в адмінці — щоб текст виглядав схоже на сайт */
+body {
+  font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #241b3f;
+}
+h1, h2, h3, h4 { font-family: "Exo 2", "Segoe UI", Arial, sans-serif; line-height: 1.2; }
+h2 { color: #d6336c; }
+h3 { color: #995400; }
+a { color: #d6336c; }
